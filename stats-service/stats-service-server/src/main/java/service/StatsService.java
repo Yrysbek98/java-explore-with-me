@@ -1,10 +1,12 @@
 package service;
 
+import org.springframework.http.ResponseEntity;
+
 import java.util.Optional;
 
 public interface StatsService {
 
-    void addNewData();
+    ResponseEntity<Object> addNewData();
 
-    void getData();
+    ResponseEntity<Object> getData();
 }

@@ -1,6 +1,6 @@
 package controller;
 
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ public class StatsController {
     private final StatsService statsService;
 
     @PostMapping("/hit")
-    public ResponseEntity<Object> addNewUser(@Valid @RequestBody UserRequestDto userDto) {
+    public ResponseEntity<Object> addNewUser() {
         return statsService.addNewData();
     }
 
