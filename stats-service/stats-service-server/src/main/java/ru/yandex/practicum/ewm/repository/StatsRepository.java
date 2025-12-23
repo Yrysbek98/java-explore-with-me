@@ -1,6 +1,6 @@
-package repository;
+package ru.yandex.practicum.ewm.repository;
 
-import model.Stats;
+import ru.yandex.practicum.ewm.model.Stats;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StatsRepository extends JpaRepository<Stats, Long> {

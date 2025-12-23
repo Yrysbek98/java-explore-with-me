@@ -1,4 +1,4 @@
-package model;
+package ru.yandex.practicum.ewm.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
