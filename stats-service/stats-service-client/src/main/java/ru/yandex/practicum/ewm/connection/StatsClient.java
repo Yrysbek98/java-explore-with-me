@@ -4,14 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 import ru.yandex.practicum.ewm.RequestStatsDto;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -19,38 +20,46 @@ import java.time.LocalDateTime;
 public class StatsClient {
     private final RestTemplate restTemplate;
 
-    @Value("${stats-service-server.url}")
+    @Value("${stats-service.url}")
     private String serverUrl;
 
 
-    public ResponseEntity<Object> addNewData(RequestStatsDto dto, @PathVariable Long id) {
-        HttpHeaders headers = createHeaders(id);
-        HttpEntity<RequestStatsDto> requestEntity = new HttpEntity<>(dto, headers);
-        return restTemplate.exchange(
+    public void saveHit(RequestStatsDto dto) {
+        restTemplate.postForEntity(
                 serverUrl + "/hit",
-                HttpMethod.POST,
-                requestEntity,
-                Object.class
+                dto,
+                Void.class
         );
     }
 
-    public ResponseEntity<Object> getData(RequestStatsDto dto, @PathVariable Long id, LocalDateTime start, LocalDateTime end) {
-        HttpHeaders headers = createHeaders(id);
-        HttpEntity<RequestStatsDto> requestEntity = new HttpEntity<>(dto, headers);
-        return restTemplate.exchange(
-                serverUrl + "/stats/" + start + end,
-                HttpMethod.GET,
-                requestEntity,
-                Object.class
-        );
-    }
 
-    private HttpHeaders createHeaders(Long userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        if (userId != null) {
-            headers.set("X-Sharer-User-Id", String.valueOf(userId));
+    public ResponseEntity<ResponseStatsDto[]> getStats(
+            LocalDateTime start,
+            LocalDateTime end,
+            List<String> uris,
+            Boolean unique
+    ) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("start", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        params.put("end", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        StringBuilder urlBuilder = new StringBuilder(serverUrl + "/stats?start={start}&end={end}");
+
+        if (uris != null && !uris.isEmpty()) {
+            params.put("uris", String.join(",", uris));
+            urlBuilder.append("&uris={uris}");
         }
-        return headers;
+
+        if (unique != null) {
+            params.put("unique", unique);
+            urlBuilder.append("&unique={unique}");
+        }
+
+        return restTemplate.getForEntity(
+                urlBuilder.toString(),
+                ResponseStatsDto[].class,
+                params
+        );
     }
 }
+
