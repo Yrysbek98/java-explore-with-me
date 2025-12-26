@@ -18,16 +18,4 @@ public class StatsMapper {
         return booking;
     }
 
-    public static RequestStatsDto toDto(Stats stats) {
-        if (stats == null) {
-            return null;
-        }
-
-        return new RequestStatsDto(
-                stats.getApp(),
-                stats.getIp(),
-                stats.getUri(),
-                stats.getTimestamp()
-        );
-    }
 }

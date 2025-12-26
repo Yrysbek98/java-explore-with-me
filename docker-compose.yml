@@ -12,7 +12,9 @@ services:
       - ./volumes/stats-db:/var/lib/postgresql/data
 
   stats-server:
-    build: stats-service/stats-service-server
+    build:
+      context: .
+      dockerfile: stats-service/Dockerfile
     container_name: stats-server
     ports:
       - "9090:9090"
@@ -36,7 +38,9 @@ services:
       - ./volumes/ewm-db:/var/lib/postgresql/data
 
   ewm-service:
-    build: main-service
+    build:
+      context: .
+      dockerfile: main-service/Dockerfile
     container_name: ewm-service
     ports:
       - "8080:8080"

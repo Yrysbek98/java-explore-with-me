@@ -25,5 +25,5 @@ public class RequestStatsDto {
     private String ip;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime timestamp; // можно оставить LocalDateTime с аннотацией
+    private LocalDateTime timestamp;
 }

@@ -15,13 +15,13 @@ public interface StatsRepository extends JpaRepository<Stats, Long> {
 
 
     @Query("""
-        SELECT new ru.practicum.dto.ResponseStatsDto(s.app, s.uri, COUNT(DISTINCT s.ip))
-        FROM Stats s
-        WHERE s.timestamp BETWEEN :start AND :end
-        AND (COALESCE(:uris, NULL) IS NULL OR s.uri IN :uris)
-        GROUP BY s.app, s.uri
-        ORDER BY COUNT(DISTINCT s.ip) DESC
-    """)
+            SELECT new ru.yandex.practicum.ewm.ResponseStatsDto(s.app, s.uri, COUNT(DISTINCT s.ip))
+            FROM Stats s
+            WHERE s.timestamp BETWEEN :start AND :end
+            AND (COALESCE(:uris, NULL) IS NULL OR s.uri IN :uris)
+            GROUP BY s.app, s.uri
+            ORDER BY COUNT(DISTINCT s.ip) DESC
+            """)
     List<ResponseStatsDto> findUniqueStats(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
@@ -30,13 +30,13 @@ public interface StatsRepository extends JpaRepository<Stats, Long> {
 
 
     @Query("""
-        SELECT new ru.practicum.dto.ResponseStatsDto(s.app, s.uri, COUNT(s.ip))
-        FROM Stats s
-        WHERE s.timestamp BETWEEN :start AND :end
-        AND (COALESCE(:uris, NULL) IS NULL OR s.uri IN :uris)
-        GROUP BY s.app, s.uri
-        ORDER BY COUNT(s.ip) DESC
-    """)
+            SELECT new ru.yandex.practicum.ewm.ResponseStatsDto(s.app, s.uri, COUNT(s.ip))
+            FROM Stats s
+            WHERE s.timestamp BETWEEN :start AND :end
+            AND (COALESCE(:uris, NULL) IS NULL OR s.uri IN :uris)
+            GROUP BY s.app, s.uri
+            ORDER BY COUNT(s.ip) DESC
+            """)
     List<ResponseStatsDto> findAllStats(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
