@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.yandex.practicum.ewm.RequestStatsDto;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 
 @Service
@@ -39,26 +39,21 @@ public class StatsClient {
             List<String> uris,
             Boolean unique
     ) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("start", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        params.put("end", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        StringBuilder urlBuilder = new StringBuilder(serverUrl + "/stats?start={start}&end={end}");
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(serverUrl + "/stats")
+                .queryParam("start", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .queryParam("end", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         if (uris != null && !uris.isEmpty()) {
-            params.put("uris", String.join(",", uris));
-            urlBuilder.append("&uris={uris}");
+            uris.forEach(uri -> builder.queryParam("uris", uri));
         }
 
         if (unique != null) {
-            params.put("unique", unique);
-            urlBuilder.append("&unique={unique}");
+            builder.queryParam("unique", unique);
         }
 
         return restTemplate.getForEntity(
-                urlBuilder.toString(),
-                ResponseStatsDto[].class,
-                params
+                builder.toUriString(),
+                ResponseStatsDto[].class
         );
     }
 }
