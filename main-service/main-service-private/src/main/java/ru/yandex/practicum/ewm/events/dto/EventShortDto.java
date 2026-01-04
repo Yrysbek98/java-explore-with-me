@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
+import ru.yandex.practicum.ewm.users.dto.UserDto;
 import ru.yandex.practicum.ewm.users.dto.UserShortDto;
 
 import java.time.LocalDateTime;
@@ -21,4 +22,7 @@ public class EventShortDto {
     private Boolean paid = false;
     private String title;
     private Long views = 0L;
+
+    public EventShortDto(String annotation, CategoryDto dto, Long confirmedRequests, LocalDateTime eventDate, Long id, UserDto dto1, Boolean paid, String title, Long views) {
+    }
 }
