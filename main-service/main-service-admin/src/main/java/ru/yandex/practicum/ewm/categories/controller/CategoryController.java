@@ -9,6 +9,7 @@ import ru.yandex.practicum.ewm.model.Category;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(path = "/admin/categories")
 public class CategoryController {
         private final CategoryService categoryService;
 
