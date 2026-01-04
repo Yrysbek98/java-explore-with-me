@@ -1,14 +1,17 @@
 package ru.yandex.practicum.ewm.categories.service;
 
 import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
+import ru.yandex.practicum.ewm.categories.dto.NewCategoryDto;
 import ru.yandex.practicum.ewm.model.Category;
+
+import java.util.List;
 
 public interface CategoryService {
 
-    CategoryDto addNewCategory(Category category);
-
-    CategoryDto updateCategory(Long id, String name);
-
-    void deleteCategory(Long id);
+    CategoryDto addCategory(NewCategoryDto dto);
+    CategoryDto updateCategory(Long catId, CategoryDto dto);
+    void deleteCategory(Long catId);
+    CategoryDto getCategoryById(Long catId);
+    List<CategoryDto> getCategories(Integer from, Integer size);
 
 }

@@ -1,10 +1,9 @@
 package ru.yandex.practicum.ewm.categories.controller;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
 import ru.yandex.practicum.ewm.categories.service.CategoryService;
 
@@ -15,13 +14,16 @@ import java.util.List;
 @RequestMapping(path = "categories")
 public class CategoryController {
     private final CategoryService categoryService;
-    @GetMapping("/{id}")
-    public CategoryDto getUserById(@PathVariable Long id) {
-        return categoryService.getCategoryById(id);
+
+    @GetMapping("/{catId}")
+    public CategoryDto getCategory(@PathVariable Long catId) {
+        return categoryService.getCategoryById(catId);
     }
 
-    @GetMapping()
-    public List<CategoryDto> getAllUsers() {
-        return categoryService.getAllCategories();
+    @GetMapping
+    public List<CategoryDto> getCategories(
+            @RequestParam(defaultValue = "0") @Min(0) Integer from,
+            @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return categoryService.getCategories(from, size);
     }
 }
