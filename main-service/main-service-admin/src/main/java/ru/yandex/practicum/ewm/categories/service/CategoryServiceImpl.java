@@ -21,8 +21,9 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public CategoryDto updateCategory(Long id) {
+    public CategoryDto updateCategory(Long id, String name ) {
         Optional<Category> category = categoryRepository.findById(id);
+        category.get().setName(name);
         Category saved = categoryRepository.save(category.get());
         return CategoryMapper.toDto(saved);
     }
