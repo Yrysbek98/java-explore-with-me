@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.yandex.practicum.ewm.enums.EventState;
 
 import java.time.LocalDateTime;
@@ -58,6 +59,7 @@ public class Event {
     private Long views = 0L;
 
     @Column(name = "created_on")
+    @CreationTimestamp
     private LocalDateTime createdOn;
 
     @Column(name = "published_on")
@@ -66,4 +68,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private EventState state = EventState.PENDING;
+
+    public Event(String annotation, Category category, LocalDateTime eventDate, User user, Location location, Boolean paid, Integer participantLimit, Boolean requestModeration, String title) {
+    }
 }

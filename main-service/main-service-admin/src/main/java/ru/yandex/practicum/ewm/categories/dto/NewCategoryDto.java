@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewCategoryDto {
-    @NotBlank(message = "Category name must not be blank")
+    @NotBlank(message = "Название категории не должно быть пустым")
     @Size(min = 1, max = 50)
     private String name;
 }

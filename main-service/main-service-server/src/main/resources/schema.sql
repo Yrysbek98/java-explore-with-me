@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS events (
     title VARCHAR(120) NOT NULL,
     confirmed_requests BIGINT DEFAULT 0,
     views BIGINT DEFAULT 0,
-    created_on TIMESTAMP,
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     published_on TIMESTAMP,
     state VARCHAR(20) NOT NULL DEFAULT 'PENDING'
 );

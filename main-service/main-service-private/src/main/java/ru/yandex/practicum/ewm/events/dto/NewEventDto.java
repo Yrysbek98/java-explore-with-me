@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NewEventDto {
     private String annotation;
-    private CategoryDto category;
+    private Long category;
     private String description;
     private LocalDateTime eventDate;
     private Location location;

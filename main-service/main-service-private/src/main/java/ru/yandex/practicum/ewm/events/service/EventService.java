@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface EventService {
 
-    List<EventShortDto> getUsersEvents(Long userId);
+    List<EventShortDto> getUsersEvents(Long userId, Integer from, Integer size);
 
     EventFullDto addNewEvent(Long userId, NewEventDto dto);
 
     EventFullDto getUsersEvent(Long userId, Long eventId);
 
-    EventFullDto updateEvent(UpdateEventUserRequestDto dto );
+    EventFullDto updateEvent(Long userId, Long eventId, UpdateEventUserRequestDto dto );
 
     ParticipationRequestDto getUserEventRequest(Long userId, Long eventId);
 
