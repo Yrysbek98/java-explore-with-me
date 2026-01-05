@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UpdateEventUserRequestDto {
     private String annotation;
-    private CategoryDto category;
+    private Long category;
     private String description;
     private LocalDateTime eventDate;
     private Location location;
@@ -23,5 +23,4 @@ public class UpdateEventUserRequestDto {
     private Boolean requestModeration;
     private EventState state;
     private String title;
-
 }

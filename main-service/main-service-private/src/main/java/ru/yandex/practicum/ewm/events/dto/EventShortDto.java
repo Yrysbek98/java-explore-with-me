@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.events.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class EventShortDto {
     private String annotation;
     private CategoryDto category;

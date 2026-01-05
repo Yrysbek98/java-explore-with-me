@@ -56,7 +56,7 @@ public class EventServiceImpl implements EventService {
                 );
 
         Event event = EventMapper.toEntityFromNewDto(dto, user, category);
-        if (!eventRepository.isEventDateAtLeastTwoHoursAfterCreated(event.getId())){
+        if (!eventRepository.isEventDateAtLeastTwoHoursAfterCreated(event.getId())) {
             throw new ValidationException("Неправильно указана дата");
         }
         Event saved = eventRepository.save(event);
@@ -73,14 +73,25 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto updateEvent(Long userId, Long eventId, UpdateEventUserRequestDto dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new NotFoundException("Пользователь  не найден")
+                );
+
+        Category category = categoryRepository.findById(dto.getCategory())
+                .orElseThrow(() ->
+                        new NotFoundException("Категория не найдена")
+                );
+
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() ->
                         new NotFoundException("Событие не найдено")
                 );
-
         if (event.getState() == EventState.PUBLISHED) {
             throw new ValidationException("Событие уже опубликовано");
         }
+
+
         return null; // Доделать
     }
 

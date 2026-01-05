@@ -2,6 +2,7 @@ package ru.yandex.practicum.ewm.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "events")
 public class Event {
@@ -69,6 +71,4 @@ public class Event {
     @Column(name = "state", nullable = false)
     private EventState state = EventState.PENDING;
 
-    public Event(String annotation, Category category, LocalDateTime eventDate, User user, Location location, Boolean paid, Integer participantLimit, Boolean requestModeration, String title) {
-    }
 }
