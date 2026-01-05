@@ -26,5 +26,17 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("eventId") Long eventId
     );
 
+        @Query(value = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM events
+                WHERE id = :eventId
+                  AND event_date >= created_on + INTERVAL '1 hour'
+            )
+        """, nativeQuery = true)
+        boolean isEventDateAtLeastOneHourAfterCreated(
+                @Param("eventId") Long eventId
+        );
+
     Optional<Event> findByIdAndInitiatorId(Long eventId, Long initiatorId);
 }
