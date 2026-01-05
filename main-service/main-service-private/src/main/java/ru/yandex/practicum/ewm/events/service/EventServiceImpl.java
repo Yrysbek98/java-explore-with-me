@@ -18,9 +18,7 @@ import ru.yandex.practicum.ewm.repository.EventRepository;
 import ru.yandex.practicum.ewm.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-import static ru.yandex.practicum.ewm.enums.EventState.PUBLISHED;
 
 @Service
 @RequiredArgsConstructor
@@ -65,10 +63,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto getUsersEvent(Long userId, Long eventId) {
-        Optional<User> user = userRepository.findById(userId);
-        Optional<Event> event = eventRepository.findByIdAndInitiatorId(eventId, userId);
+        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
+                new NotFoundException("Событие не найдено")
+        );
 
-        return null;
+        return EventMapper.toEventFullDto(event);
     }
 
     @Override
@@ -78,21 +77,24 @@ public class EventServiceImpl implements EventService {
                         new NotFoundException("Пользователь  не найден")
                 );
 
+        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
+                new NotFoundException("Событие не найдено")
+        );
+
+        if (event.getState() == EventState.PUBLISHED) {
+            throw new ValidationException("Событие уже опубликовано");
+        }
+
         Category category = categoryRepository.findById(dto.getCategory())
                 .orElseThrow(() ->
                         new NotFoundException("Категория не найдена")
                 );
 
-        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() ->
-                        new NotFoundException("Событие не найдено")
-                );
-        if (event.getState() == EventState.PUBLISHED) {
-            throw new ValidationException("Событие уже опубликовано");
-        }
+        Event update = EventMapper.toEntityFromUpdateDto(eventId, dto, user, category);
 
+        Event saved = eventRepository.save(update);
 
-        return null; // Доделать
+        return EventMapper.toEventFullDto(saved);
     }
 
     @Override

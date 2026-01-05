@@ -31,10 +31,11 @@ public class EventMapper {
                 .build();
     }
 
-    public static Event toEntityFromUpdateDto(UpdateEventUserRequestDto dto, User user, Category category) {
+    public static Event toEntityFromUpdateDto(Long eventId, UpdateEventUserRequestDto dto, User user, Category category) {
         if (dto == null) return null;
 
         return Event.builder()
+                .id(eventId)
                 .annotation(dto.getAnnotation())
                 .category(category)
                 .description(dto.getDescription())
