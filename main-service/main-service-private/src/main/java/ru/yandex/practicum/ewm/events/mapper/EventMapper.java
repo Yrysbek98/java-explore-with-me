@@ -6,7 +6,7 @@ import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.events.dto.EventFullDto;
 import ru.yandex.practicum.ewm.events.dto.EventShortDto;
 
-import ru.yandex.practicum.ewm.events.dto.NewEventDto;
+import ru.yandex.practicum.ewm.events.dto.UpdateEventDto;
 import ru.yandex.practicum.ewm.events.dto.UpdateEventUserRequestDto;
 import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.model.Event;
@@ -14,7 +14,7 @@ import ru.yandex.practicum.ewm.model.User;
 import ru.yandex.practicum.ewm.users.mapper.UserMapper;
 
 public class EventMapper {
-    public static Event toEntityFromNewDto(NewEventDto dto, User user, Category category) {
+    public static Event toEntityFromNewDto(UpdateEventDto dto, User user, Category category) {
         if (dto == null) return null;
 
         return Event.builder()

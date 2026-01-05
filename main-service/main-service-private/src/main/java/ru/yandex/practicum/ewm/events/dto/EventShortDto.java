@@ -25,6 +25,4 @@ public class EventShortDto {
     private String title;
     private Long views = 0L;
 
-    public EventShortDto(String annotation, CategoryDto dto, Long confirmedRequests, LocalDateTime eventDate, Long id, UserDto dto1, Boolean paid, String title, Long views) {
-    }
 }

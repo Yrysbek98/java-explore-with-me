@@ -43,7 +43,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto addNewEvent(Long userId, NewEventDto dto) {
+    public EventFullDto addNewEvent(Long userId, UpdateEventDto dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new NotFoundException("Пользователь не найдено")
