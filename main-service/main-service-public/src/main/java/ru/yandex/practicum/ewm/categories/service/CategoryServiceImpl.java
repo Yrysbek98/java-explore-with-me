@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
 import ru.yandex.practicum.ewm.categories.mapper.CategoryMapper;
+import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.repository.CategoryRepository;
 
@@ -21,9 +22,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Long catId) {
-        Optional<Category> category = categoryRepository.findById(catId);
-
-        return CategoryMapper.toDto(category.get());
+        Category category = categoryRepository.findById(catId)
+                .orElseThrow(() ->
+                        new NotFoundException("Категория не найдена")
+        );
+        return CategoryMapper.toDto(category);
     }
 
     @Override
