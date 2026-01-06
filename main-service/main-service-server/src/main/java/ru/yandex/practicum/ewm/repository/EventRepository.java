@@ -57,4 +57,28 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("rangeEnd") LocalDateTime rangeEnd,
             Pageable pageable
     );
+
+    @Query("SELECT e FROM Event e " +
+            "LEFT JOIN Request r ON r.event = e AND r.status = 'CONFIRMED' " +
+            "WHERE (:text IS NULL OR LOWER(e.annotation) LIKE LOWER(CONCAT('%', :text, '%')) " +
+            "       OR LOWER(e.description) LIKE LOWER(CONCAT('%', :text, '%'))) " +
+            "AND (:categories IS NULL OR e.category.id IN :categories) " +
+            "AND (:paid IS NULL OR e.paid = :paid) " +
+            "AND (:rangeStart IS NULL OR e.eventDate >= :rangeStart) " +
+            "AND (:rangeEnd IS NULL OR e.eventDate <= :rangeEnd) " +
+            "AND e.state = 'PUBLISHED' " +
+            "GROUP BY e.id " +
+            "HAVING (:onlyAvailable = false OR e.participantLimit = 0 OR e.participantLimit > COUNT(r))")
+    Page<Event> searchEventsForPublic(
+            @Param("text") String text,
+            @Param("categories") List<Long> categories,
+            @Param("paid") Boolean paid,
+            @Param("rangeStart") LocalDateTime rangeStart,
+            @Param("rangeEnd") LocalDateTime rangeEnd,
+            @Param("onlyAvailable") Boolean onlyAvailable,
+            Pageable pageable
+    );
+
+    Optional<Event> findByIdAndState(Long id, EventState state);
+
 }
