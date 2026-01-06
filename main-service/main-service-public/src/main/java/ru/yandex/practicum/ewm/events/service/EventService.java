@@ -2,15 +2,13 @@ package ru.yandex.practicum.ewm.events.service;
 
 import ru.yandex.practicum.ewm.events.dto.EventFullDto;
 import ru.yandex.practicum.ewm.events.dto.EventSearchFilter;
-import ru.yandex.practicum.ewm.events.dto.UpdateEventDto;
-
+import ru.yandex.practicum.ewm.events.dto.EventShortDto;
 
 import java.util.List;
 
 public interface EventService {
-    List<EventFullDto> getAllEvents(
-            EventSearchFilter filter);
 
-    EventFullDto updateEvent(Long eventId, UpdateEventDto dto);
+    List<EventShortDto> getAllEvents(EventSearchFilter filter);
+
+    EventFullDto getEventById(Long eventId);
 }
-
