@@ -1,9 +1,13 @@
 package ru.yandex.practicum.ewm.events.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.events.dto.EventFullDto;
+import ru.yandex.practicum.ewm.events.dto.EventSearchFilter;
 import ru.yandex.practicum.ewm.events.dto.UpdateEventDto;
 import ru.yandex.practicum.ewm.events.mapper.EventMapper;
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
@@ -11,13 +15,13 @@ import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
 import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.model.Event;
-import ru.yandex.practicum.ewm.model.User;
 import ru.yandex.practicum.ewm.repository.CategoryRepository;
 import ru.yandex.practicum.ewm.repository.EventRepository;
 import ru.yandex.practicum.ewm.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,15 +32,43 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventFullDto> getAllEvents(
-            List<Long> users,
-            List<String> states,
-            List<Long> categories,
-            LocalDateTime rangeStart,
-            LocalDateTime rangeEnd,
-            Integer from,
-            Integer size) {
-        return List.of();
+            EventSearchFilter filter) {
+
+        if (filter.getRangeStart() != null && filter.getRangeEnd() != null) {
+            if (filter.getRangeStart().isAfter(filter.getRangeEnd())) {
+                throw new ValidationException("rangeStart не может быть позже rangeEnd");
+            }
+        }
+
+        List<EventState> eventStates = null;
+        if (filter.getStates() != null && !filter.getStates().isEmpty()) {
+            eventStates = filter.getStates().stream()
+                    .map(state -> {
+                        try {
+                            return EventState.valueOf(state);
+                        } catch (IllegalArgumentException e) {
+                            throw new ValidationException("Неизвестное состояние события: " + state);
+                        }
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        Pageable pageable = PageRequest.of(filter.getFrom() / filter.getSize(), filter.getSize());
+
+        Page<Event> events = eventRepository.searchEvents(
+                filter.getUsers(),
+                eventStates,
+                filter.getCategories(),
+                filter.getRangeStart(),
+                filter.getRangeEnd(),
+                pageable
+        );
+
+        return events.getContent().stream()
+                .map(EventMapper::toEventFullDto)
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public EventFullDto updateEvent(Long eventId, UpdateEventDto dto) {
