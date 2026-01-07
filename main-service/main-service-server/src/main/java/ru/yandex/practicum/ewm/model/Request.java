@@ -35,4 +35,11 @@ public class Request {
     @Column(nullable = false, length = 20)
     @Builder.Default
     private RequestStatus status = RequestStatus.PENDING;
+
+    public Request(User user, Event event, RequestStatus status) {
+        this.requester = user;
+        this.event =event;
+        this.status = status;
+
+    }
 }

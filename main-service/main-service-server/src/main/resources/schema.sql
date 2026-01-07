@@ -38,3 +38,6 @@ CREATE TABLE IF NOT EXISTS requests (
     status VARCHAR(20) NOT NULL DEFAULT 'PENDING'
 );
 
+ALTER TABLE requests
+ADD CONSTRAINT uq_event_requester UNIQUE (event_id, requester_id);
+

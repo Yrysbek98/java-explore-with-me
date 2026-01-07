@@ -10,5 +10,5 @@ public interface RequestService {
 
     RequestDto addNewRequest(Long userId, Long eventId);
 
-    RequestDto cancelRequest(Long userId, Long requestId);
+    void cancelRequest(Long userId, Long requestId);
 }
