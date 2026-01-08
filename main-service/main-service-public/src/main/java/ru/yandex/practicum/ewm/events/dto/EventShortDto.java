@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
+
+import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 import ru.yandex.practicum.ewm.users.dto.UserShortDto;
 
 import java.time.LocalDateTime;

@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
+
+import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.model.Location;
 import ru.yandex.practicum.ewm.users.dto.UserShortDto;

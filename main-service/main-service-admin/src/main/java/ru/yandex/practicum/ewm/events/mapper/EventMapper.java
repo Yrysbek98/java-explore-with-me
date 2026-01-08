@@ -1,9 +1,10 @@
 package ru.yandex.practicum.ewm.events.mapper;
 
-import ru.yandex.practicum.ewm.categories.mapper.CategoryMapper;
+
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.events.dto.EventFullDto;
 import ru.yandex.practicum.ewm.events.dto.UpdateEventDto;
+import ru.yandex.practicum.ewm.mapper.CategoryMapper;
 import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.model.Event;
 import ru.yandex.practicum.ewm.model.User;

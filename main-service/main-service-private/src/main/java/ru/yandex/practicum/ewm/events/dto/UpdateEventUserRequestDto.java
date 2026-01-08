@@ -3,7 +3,6 @@ package ru.yandex.practicum.ewm.events.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.model.Location;
 

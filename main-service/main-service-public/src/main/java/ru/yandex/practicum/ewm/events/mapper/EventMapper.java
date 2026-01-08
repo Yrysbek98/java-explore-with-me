@@ -1,12 +1,12 @@
 package ru.yandex.practicum.ewm.events.mapper;
 
 import lombok.RequiredArgsConstructor;
-import ru.yandex.practicum.ewm.categories.mapper.CategoryMapper;
-import ru.yandex.practicum.ewm.enums.EventState;
+
 import ru.yandex.practicum.ewm.events.dto.EventFullDto;
 import ru.yandex.practicum.ewm.events.dto.EventShortDto;
-import ru.yandex.practicum.ewm.events.dto.NewEventDto;
-import ru.yandex.practicum.ewm.model.Category;
+
+import ru.yandex.practicum.ewm.mapper.CategoryMapper;
+
 import ru.yandex.practicum.ewm.model.Event;
 import ru.yandex.practicum.ewm.model.Location;
 import ru.yandex.practicum.ewm.users.mapper.UserMapper;
