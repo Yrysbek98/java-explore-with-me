@@ -18,15 +18,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private  final CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Long catId) {
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(() ->
-                        new NotFoundException("Категория не найдена")
-        );
+                        new NotFoundException("Категория с именем=" + catId + " не найден")
+                );
         return CategoryMapper.toDto(category);
     }
 
