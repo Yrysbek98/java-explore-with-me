@@ -6,6 +6,6 @@ import ru.yandex.practicum.ewm.model.User;
 
 
 @Repository
-public interface UserRepository  extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 }

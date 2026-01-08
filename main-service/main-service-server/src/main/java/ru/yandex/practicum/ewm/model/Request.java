@@ -1,26 +1,28 @@
 package ru.yandex.practicum.ewm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.yandex.practicum.ewm.enums.RequestStatus;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "requests")
 public class Request {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "created", nullable = false)
+    @CreationTimestamp
     private LocalDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,14 +34,19 @@ public class Request {
     private User requester;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    @Builder.Default
-    private RequestStatus status = RequestStatus.PENDING;
+    @Column(name = "status", nullable = false, length = 20)
+    private RequestStatus status;
 
-    public Request(User user, Event event, RequestStatus status) {
-        this.requester = user;
-        this.event =event;
-        this.status = status;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Request request = (Request) o;
+        return Objects.equals(id, request.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

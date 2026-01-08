@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ParticipationRequestDto {
-
     private Long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

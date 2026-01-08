@@ -78,7 +78,7 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsMap(eventIds);
 
-        // Batch получение views из сервиса статистики
+
         Map<Long, Long> viewsMap = getViewsMap(eventIds);
 
         // Сохраняем статистику просмотра
@@ -95,11 +95,11 @@ public class PublicEventServiceImpl implements PublicEventService {
 
     @Override
     public EventFullDto getPublicEventById(Long eventId, HttpServletRequest request) {
-        // Получаем только опубликованные события
+
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
-        // Получаем confirmedRequests
+
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
         // Получаем views из статистики и увеличиваем счетчик
@@ -112,7 +112,6 @@ public class PublicEventServiceImpl implements PublicEventService {
         return EventMapper.toEventFullDto(event, confirmedRequests, views);
     }
 
-    // =================== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ===================
 
     private Map<Long, Long> getConfirmedRequestsMap(List<Long> eventIds) {
         if (eventIds.isEmpty()) {

@@ -1,14 +1,15 @@
 package ru.yandex.practicum.ewm.requests.service;
 
-import ru.yandex.practicum.ewm.requests.dto.RequestDto;
+import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
+
 
 import java.util.List;
 
 public interface RequestService {
 
-    List<RequestDto> getUsersRequests(Long userId);
+    List<ParticipationRequestDto> getUserRequests(Long userId);
 
-    RequestDto addNewRequest(Long userId, Long eventId);
+    ParticipationRequestDto addParticipationRequest(Long userId, Long eventId);
 
-    void cancelRequest(Long userId, Long requestId);
+    ParticipationRequestDto cancelRequest(Long userId, Long requestId);
 }
