@@ -1,10 +1,7 @@
 package ru.yandex.practicum.ewm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import ru.yandex.practicum.ewm.enums.EventState;
 
@@ -38,27 +35,23 @@ public class Event {
     @JoinColumn(name = "initiator_id", nullable = false)
     private User initiator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
+    @Embedded
     private Location location;
 
     @Column(name = "paid", nullable = false)
+    @Builder.Default
     private Boolean paid = false;
 
     @Column(name = "participant_limit", nullable = false)
+    @Builder.Default
     private Integer participantLimit = 0;
 
     @Column(name = "request_moderation", nullable = false)
+    @Builder.Default
     private Boolean requestModeration = true;
 
     @Column(name = "title", nullable = false, length = 120)
     private String title;
-
-    @Column(name = "confirmed_requests")
-    private Long confirmedRequests = 0L;
-
-    @Column(name = "views")
-    private Long views = 0L;
 
     @Column(name = "created_on")
     @CreationTimestamp
@@ -69,6 +62,19 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
+    @Builder.Default
     private EventState state = EventState.PENDING;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return id != null && id.equals(event.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
