@@ -2,6 +2,7 @@ package ru.yandex.practicum.ewm.mapper;
 
 
 
+import ru.yandex.practicum.ewm.dto.EventDto.*;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.model.*;
 
@@ -17,7 +18,7 @@ public class EventMapper {
                 .description(dto.getDescription())
                 .eventDate(dto.getEventDate())
                 .initiator(initiator)
-                .location(toLocationEntity(dto.getLocation()))
+                .location(LocationMapper.toEntity(dto.getLocation())) // ← Используем LocationMapper
                 .paid(dto.getPaid() != null ? dto.getPaid() : false)
                 .participantLimit(dto.getParticipantLimit() != null ? dto.getParticipantLimit() : 0)
                 .requestModeration(dto.getRequestModeration() != null ? dto.getRequestModeration() : true)
@@ -26,7 +27,6 @@ public class EventMapper {
                 .build();
     }
 
-    // =================== UPDATE METHODS ===================
 
     public static void updateEventFromUserRequest(Event event, UpdateEventUserRequest dto, Category category) {
         if (dto == null) return;
@@ -44,7 +44,7 @@ public class EventMapper {
             event.setEventDate(dto.getEventDate());
         }
         if (dto.getLocation() != null) {
-            event.setLocation(toLocationEntity(dto.getLocation()));
+            event.setLocation(LocationMapper.toEntity(dto.getLocation()));
         }
         if (dto.getPaid() != null) {
             event.setPaid(dto.getPaid());
@@ -76,7 +76,7 @@ public class EventMapper {
             event.setEventDate(dto.getEventDate());
         }
         if (dto.getLocation() != null) {
-            event.setLocation(toLocationEntity(dto.getLocation()));
+            event.setLocation(LocationMapper.toEntity(dto.getLocation())); // ← Используем LocationMapper
         }
         if (dto.getPaid() != null) {
             event.setPaid(dto.getPaid());
@@ -92,7 +92,6 @@ public class EventMapper {
         }
     }
 
-    // =================== TO DTO ===================
 
     public static EventShortDto toEventShortDto(Event event, Long confirmedRequests, Long views) {
         if (event == null) return null;
@@ -122,7 +121,7 @@ public class EventMapper {
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
                 .initiator(UserMapper.toShortDto(event.getInitiator()))
-                .location(toLocationDto(event.getLocation()))
+                .location(LocationMapper.toDto(event.getLocation())) // ← Используем LocationMapper
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .publishedOn(event.getPublishedOn())
@@ -133,25 +132,6 @@ public class EventMapper {
                 .build();
     }
 
-    // =================== LOCATION MAPPING ===================
-
-    private static Location toLocationEntity(LocationDto dto) {
-        if (dto == null) return null;
-        return Location.builder()
-                .lat(dto.getLat())
-                .lon(dto.getLon())
-                .build();
-    }
-
-    private static LocationDto toLocationDto(Location location) {
-        if (location == null) return null;
-        return LocationDto.builder()
-                .lat(location.getLat())
-                .lon(location.getLon())
-                .build();
-    }
-
-    // =================== STATE ACTION HELPERS ===================
 
     public static EventState getNewStateFromUserAction(String stateAction, EventState currentState) {
         if (stateAction == null) return currentState;
