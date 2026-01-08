@@ -25,7 +25,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findByIdIn(List<Long> requestIds);
 
-    // Для batch запроса (несколько событий сразу)
     @Query("SELECT r.event.id, COUNT(r) FROM Request r " +
             "WHERE r.event.id IN :eventIds AND r.status = 'CONFIRMED' " +
             "GROUP BY r.event.id")

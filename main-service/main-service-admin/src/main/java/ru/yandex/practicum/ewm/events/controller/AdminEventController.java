@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.ewm.dto.EventDto.AdminEventSearchParams;
 import ru.yandex.practicum.ewm.dto.EventDto.EventFullDto;
 import ru.yandex.practicum.ewm.dto.EventDto.UpdateEventAdminRequest;
-import ru.yandex.practicum.ewm.events.service.EventService;
+import ru.yandex.practicum.ewm.events.service.AdminEventService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 @Validated
 public class AdminEventController {
 
-    private final EventService eventService;
+    private final AdminEventService eventService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

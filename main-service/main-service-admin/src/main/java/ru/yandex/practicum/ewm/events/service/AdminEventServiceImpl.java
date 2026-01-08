@@ -14,7 +14,6 @@ import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
 import ru.yandex.practicum.ewm.mapper.EventMapper;
-import ru.yandex.practicum.ewm.mapper.LocationMapper;
 import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.model.Event;
 import ru.yandex.practicum.ewm.repository.CategoryRepository;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class EventServiceImpl implements EventService {
+public class AdminEventServiceImpl implements AdminEventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;

@@ -17,7 +17,13 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     boolean existsByCategoryId(Long categoryId);
 
+
     Page<Event> findByInitiatorId(Long initiatorId, Pageable pageable);
+
+
+    boolean existsByIdAndInitiatorId(Long eventId, Long initiatorId); // ←
+
+
 
     @Query(value = """
                 SELECT EXISTS (

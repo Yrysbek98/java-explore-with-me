@@ -3,7 +3,6 @@ package ru.yandex.practicum.ewm.events.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.enums.EventState;
@@ -12,7 +11,6 @@ import ru.yandex.practicum.ewm.events.dto.EventSearchFilter;
 import ru.yandex.practicum.ewm.events.dto.EventShortDto;
 import ru.yandex.practicum.ewm.events.mapper.EventMapper;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
-import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
 import ru.yandex.practicum.ewm.model.Event;
 import ru.yandex.practicum.ewm.repository.EventRepository;
 
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService{
+public class EventServiceImpl implements AdminEventService {
 
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;

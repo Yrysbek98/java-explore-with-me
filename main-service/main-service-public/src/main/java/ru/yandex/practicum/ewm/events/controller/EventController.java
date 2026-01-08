@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.ewm.events.dto.EventFullDto;
 import ru.yandex.practicum.ewm.events.dto.EventSearchFilter;
 import ru.yandex.practicum.ewm.events.dto.EventShortDto;
-import ru.yandex.practicum.ewm.events.service.EventService;
+import ru.yandex.practicum.ewm.events.service.AdminEventService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class EventController {
-    private final EventService eventService;
+    private final AdminEventService eventService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

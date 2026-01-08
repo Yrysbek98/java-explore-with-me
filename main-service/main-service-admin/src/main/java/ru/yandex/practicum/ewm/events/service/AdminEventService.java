@@ -9,7 +9,7 @@ import ru.yandex.practicum.ewm.dto.EventDto.UpdateEventAdminRequest;
 
 import java.util.List;
 
-public interface EventService {
+public interface AdminEventService {
     List<EventFullDto> searchEventsForAdmin(
             AdminEventSearchParams filter);
 
