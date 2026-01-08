@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.location.dto;
+package ru.yandex.practicum.ewm.dto.LocationDto;
 
 
 import lombok.AllArgsConstructor;

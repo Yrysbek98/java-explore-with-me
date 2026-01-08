@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.categories.service;
 
-import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
+
+import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 
 import java.util.List;
 

@@ -4,8 +4,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
+
 import ru.yandex.practicum.ewm.categories.service.CategoryService;
+import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 
 import java.util.List;
 

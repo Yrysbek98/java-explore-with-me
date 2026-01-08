@@ -3,11 +3,12 @@ package ru.yandex.practicum.ewm.categories.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import ru.yandex.practicum.ewm.categories.dto.CategoryDto;
-import ru.yandex.practicum.ewm.categories.dto.NewCategoryDto;
-import ru.yandex.practicum.ewm.categories.mapper.CategoryMapper;
+
+import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
+import ru.yandex.practicum.ewm.dto.CategoryDto.NewCategoryDto;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
+import ru.yandex.practicum.ewm.mapper.CategoryMapper;
 import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.repository.CategoryRepository;
 

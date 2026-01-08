@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.categories.dto;
+package ru.yandex.practicum.ewm.dto.CategoryDto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewCategoryDto {
-    @NotBlank(message = "Название категории не должно быть пустым")
+public class CategoryDto {
+    private Long id;
+
+    @NotBlank
     @Size(min = 1, max = 50)
     private String name;
 }
