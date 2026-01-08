@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.model.User;
 import ru.yandex.practicum.ewm.repository.UserRepository;
@@ -30,9 +31,13 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
 
-        List<User> users = (ids == null || ids.isEmpty())
-                ? userRepository.findAll(pageable).getContent()
-                : userRepository.findAllById(ids);
+        List<User> users;
+
+        if (ids == null || ids.isEmpty()) {
+            users = userRepository.findAll(pageable).getContent();
+        } else {
+            users = userRepository.findAllById(ids);
+        }
 
         return users.stream()
                 .map(UserMapper::toDto)
@@ -40,16 +45,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto registerUser(NewUserRequest request) {
-        User user = UserMapper.toEntity(request);
-        if (!userRepository.existsByEmail(user.getEmail())) {
-            throw new NotFoundException("Пользователь с такой почтой уже существует");
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            if (userRepository.existsByEmail(request.getEmail())) {
+                throw new ConflictException("Пользователь с таким email уже существует");
+            }
         }
+
+        User user = UserMapper.toEntity(request);
         User saved = userRepository.save(user);
         return UserMapper.toDto(saved);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("Пользователь не найден");

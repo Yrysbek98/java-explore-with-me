@@ -26,8 +26,4 @@ public class User {
         this.email = email;
     }
 
-    public User(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }
