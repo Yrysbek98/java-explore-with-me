@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.events.dto;
+package ru.yandex.practicum.ewm.dto.EventDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Min;
@@ -7,37 +7,38 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.ewm.model.Location;
+import ru.yandex.practicum.ewm.dto.LocationDto.LocationDto;
 
 import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateEventDto {
+public class UpdateEventUserRequest {
 
-    @Size(min = 20, max = 2000, message = "Аннотация должна быть от 20 до 2000 символов")
+    @Size(min = 20, max = 2000, message = "Annotation must be between 20 and 2000 characters")
     private String annotation;
 
     private Long category;
 
-    @Size(min = 20, max = 7000, message = "Описание должно быть от 20 до 7000 символов")
+    @Size(min = 20, max = 7000, message = "Description must be between 20 and 7000 characters")
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    private Location location;
+    private LocationDto location;
 
     private Boolean paid;
 
-    @Min(0)
+    @Min(value = 0, message = "Participant limit must be non-negative")
     private Integer participantLimit;
 
     private Boolean requestModeration;
 
-    private String stateAction;
+    private String stateAction; // SEND_TO_REVIEW, CANCEL_REVIEW
 
-    @Size(min = 3, max = 120, message = "Заголовок должен быть от 3 до 120 символов")
+    @Size(min = 3, max = 120, message = "Title must be between 3 and 120 characters")
     private String title;
 }

@@ -6,9 +6,8 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.ewm.users.dto.NewUserRequest;
-import ru.yandex.practicum.ewm.users.dto.UserDto;
-import ru.yandex.practicum.ewm.users.dto.UserShortDto;
+import ru.yandex.practicum.ewm.dto.UserDto.NewUserRequest;
+import ru.yandex.practicum.ewm.dto.UserDto.UserDto;
 import ru.yandex.practicum.ewm.users.service.UserService;
 
 import java.util.List;

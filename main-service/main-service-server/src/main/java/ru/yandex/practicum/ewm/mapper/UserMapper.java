@@ -1,9 +1,9 @@
-package ru.yandex.practicum.ewm.users.mapper;
+package ru.yandex.practicum.ewm.mapper;
 
 import ru.yandex.practicum.ewm.model.User;
-import ru.yandex.practicum.ewm.users.dto.NewUserRequest;
-import ru.yandex.practicum.ewm.users.dto.UserDto;
-import ru.yandex.practicum.ewm.users.dto.UserShortDto;
+import ru.yandex.practicum.ewm.dto.UserDto.NewUserRequest;
+import ru.yandex.practicum.ewm.dto.UserDto.UserDto;
+import ru.yandex.practicum.ewm.dto.UserDto.UserShortDto;
 
 
 public class UserMapper {
