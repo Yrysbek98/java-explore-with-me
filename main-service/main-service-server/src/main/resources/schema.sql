@@ -57,21 +57,21 @@ CREATE TABLE IF NOT EXISTS compilation_events (
     CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_events_state ON events(state);
-CREATE INDEX idx_events_initiator ON events(initiator_id);
-CREATE INDEX idx_events_category ON events(category_id);
-CREATE INDEX idx_events_event_date ON events(event_date);
-CREATE INDEX idx_events_published ON events(published_on) WHERE state = 'PUBLISHED';
+CREATE INDEX IF NOT EXISTS idx_events_state ON events(state);
+CREATE INDEX IF NOT EXISTS idx_events_initiator ON events(initiator_id);
+CREATE INDEX IF NOT EXISTS idx_events_category ON events(category_id);
+CREATE INDEX IF NOT EXISTS idx_events_event_date ON events(event_date);
+CREATE INDEX IF NOT EXISTS idx_events_published ON events(published_on) WHERE state = 'PUBLISHED';
 
 
-CREATE INDEX idx_requests_event_status ON requests(event_id, status);
-CREATE INDEX idx_requests_requester ON requests(requester_id);
-CREATE INDEX idx_requests_created ON requests(created);
+CREATE INDEX IF NOT EXISTS idx_requests_event_status ON requests(event_id, status);
+CREATE INDEX IF NOT EXISTS idx_requests_requester ON requests(requester_id);
+CREATE INDEX IF NOT EXISTS idx_requests_created ON requests(created);
 
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 
-CREATE INDEX idx_categories_name ON categories(name);
+CREATE INDEX IF NOT EXISTS idx_categories_name ON categories(name);
 
-CREATE INDEX idx_compilations_pinned ON compilations(pinned);
-CREATE INDEX idx_compilation_events_compilation ON compilation_events(compilation_id);
-CREATE INDEX idx_compilation_events_event ON compilation_events(event_id);
+CREATE INDEX IF NOT EXISTS idx_compilations_pinned ON compilations(pinned);
+CREATE INDEX IF NOT EXISTS idx_compilation_events_compilation ON compilation_events(compilation_id);
+CREATE INDEX IF NOT EXISTS idx_compilation_events_event ON compilation_events(event_id);
