@@ -1,8 +1,8 @@
 package ru.yandex.practicum.ewm.events.service;
 
 
-import ru.yandex.practicum.ewm.dto.EventDto.*;
-import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
+import ru.yandex.practicum.ewm.dto.*;
+import ru.yandex.practicum.ewm.dto.ParticipationRequestDto;
 
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package ru.yandex.practicum.ewm.mapper;
 
 
-import ru.yandex.practicum.ewm.dto.EventDto.*;
+import ru.yandex.practicum.ewm.dto.*;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.model.*;
 

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.dto.RequestDto;
+package ru.yandex.practicum.ewm.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

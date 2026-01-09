@@ -1,8 +1,8 @@
 package ru.yandex.practicum.ewm.categories.service;
 
 
-import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
-import ru.yandex.practicum.ewm.dto.CategoryDto.NewCategoryDto;
+import ru.yandex.practicum.ewm.dto.CategoryDto;
+import ru.yandex.practicum.ewm.dto.NewCategoryDto;
 
 
 public interface AdminCategoryService {

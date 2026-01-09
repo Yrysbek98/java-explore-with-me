@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.ewm.categories.service.PublicCategoryService;
-import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
+import ru.yandex.practicum.ewm.dto.CategoryDto;
 
 import java.util.List;
 

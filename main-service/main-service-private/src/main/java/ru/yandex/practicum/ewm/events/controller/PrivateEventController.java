@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.ewm.dto.EventDto.*;
-import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
+import ru.yandex.practicum.ewm.dto.*;
+import ru.yandex.practicum.ewm.dto.ParticipationRequestDto;
 import ru.yandex.practicum.ewm.events.service.PrivateEventService;
 
 import java.util.List;

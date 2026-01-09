@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.ewm.compilations.service.PublicCompilationService;
-import ru.yandex.practicum.ewm.dto.CompilationDto.CompilationDto;
+import ru.yandex.practicum.ewm.dto.CompilationDto;
 
 import java.util.List;
 

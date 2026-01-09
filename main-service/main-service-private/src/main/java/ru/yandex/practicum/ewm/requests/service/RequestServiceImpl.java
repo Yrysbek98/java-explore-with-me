@@ -3,7 +3,7 @@ package ru.yandex.practicum.ewm.requests.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
+import ru.yandex.practicum.ewm.dto.ParticipationRequestDto;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.enums.RequestStatus;
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;

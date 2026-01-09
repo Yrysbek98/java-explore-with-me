@@ -1,10 +1,9 @@
-package ru.yandex.practicum.ewm.dto.EventDto;
+package ru.yandex.practicum.ewm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
 
 import java.util.List;
 

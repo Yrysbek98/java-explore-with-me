@@ -1,6 +1,6 @@
 package ru.yandex.practicum.ewm.requests.service;
 
-import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
+import ru.yandex.practicum.ewm.dto.ParticipationRequestDto;
 
 
 import java.util.List;

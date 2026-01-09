@@ -8,9 +8,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.ewm.dto.EventDto.EventFullDto;
-import ru.yandex.practicum.ewm.dto.EventDto.EventShortDto;
-import ru.yandex.practicum.ewm.dto.EventDto.PublicEventSearchParams;
+import ru.yandex.practicum.ewm.dto.EventFullDto;
+import ru.yandex.practicum.ewm.dto.EventShortDto;
+import ru.yandex.practicum.ewm.dto.PublicEventSearchParams;
 import ru.yandex.practicum.ewm.events.service.PublicEventService;
 
 import java.time.LocalDateTime;

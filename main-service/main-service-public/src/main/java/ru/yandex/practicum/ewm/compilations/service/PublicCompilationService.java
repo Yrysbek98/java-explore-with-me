@@ -1,6 +1,6 @@
 package ru.yandex.practicum.ewm.compilations.service;
 
-import ru.yandex.practicum.ewm.dto.CompilationDto.CompilationDto;
+import ru.yandex.practicum.ewm.dto.CompilationDto;
 
 import java.util.List;
 

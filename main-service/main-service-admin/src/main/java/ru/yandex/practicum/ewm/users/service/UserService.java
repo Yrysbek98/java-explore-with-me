@@ -1,7 +1,7 @@
 package ru.yandex.practicum.ewm.users.service;
 
-import ru.yandex.practicum.ewm.dto.UserDto.NewUserRequest;
-import ru.yandex.practicum.ewm.dto.UserDto.UserDto;
+import ru.yandex.practicum.ewm.dto.NewUserRequest;
+import ru.yandex.practicum.ewm.dto.UserDto;
 
 import java.util.List;
 

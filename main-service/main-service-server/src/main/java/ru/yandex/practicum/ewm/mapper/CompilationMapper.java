@@ -1,9 +1,9 @@
 package ru.yandex.practicum.ewm.mapper;
 
-import ru.yandex.practicum.ewm.dto.CompilationDto.CompilationDto;
-import ru.yandex.practicum.ewm.dto.CompilationDto.NewCompilationDto;
-import ru.yandex.practicum.ewm.dto.CompilationDto.UpdateCompilationRequest;
-import ru.yandex.practicum.ewm.dto.EventDto.EventShortDto;
+import ru.yandex.practicum.ewm.dto.CompilationDto;
+import ru.yandex.practicum.ewm.dto.NewCompilationDto;
+import ru.yandex.practicum.ewm.dto.UpdateCompilationRequest;
+import ru.yandex.practicum.ewm.dto.EventShortDto;
 import ru.yandex.practicum.ewm.model.Compilation;
 import ru.yandex.practicum.ewm.model.Event;
 

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
+import ru.yandex.practicum.ewm.dto.CategoryDto;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.mapper.CategoryMapper;
 import ru.yandex.practicum.ewm.model.Category;

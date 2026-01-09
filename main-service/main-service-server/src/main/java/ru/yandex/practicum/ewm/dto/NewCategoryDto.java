@@ -1,6 +1,5 @@
-package ru.yandex.practicum.ewm.dto.UserDto;
+package ru.yandex.practicum.ewm.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -10,13 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewUserRequest {
-    @NotBlank
-    @Size(min = 2, max = 250)
+public class NewCategoryDto {
+    @NotBlank(message = "Название категории не должно быть пустым")
+    @Size(min = 1, max = 50)
     private String name;
-
-    @Email
-    @NotBlank
-    @Size(min = 6, max = 254)
-    private String email;
 }

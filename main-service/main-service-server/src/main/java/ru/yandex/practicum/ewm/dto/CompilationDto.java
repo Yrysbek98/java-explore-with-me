@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.dto.EventDto;
+package ru.yandex.practicum.ewm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EventRequestStatusUpdateRequest {
-    private List<Long> requestIds;
-    private String status;
+public class CompilationDto {
+
+    private Long id;
+
+    private Boolean pinned;
+
+    private String title;
+
+    private List<EventShortDto> events;
 }

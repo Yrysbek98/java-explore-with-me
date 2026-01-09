@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.dto.UserDto;
+package ru.yandex.practicum.ewm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

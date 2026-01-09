@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.ewm.categories.service.AdminCategoryService;
-import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
-import ru.yandex.practicum.ewm.dto.CategoryDto.NewCategoryDto;
+import ru.yandex.practicum.ewm.dto.CategoryDto;
+import ru.yandex.practicum.ewm.dto.NewCategoryDto;
 
 
 @RestController

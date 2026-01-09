@@ -1,6 +1,6 @@
 package ru.yandex.practicum.ewm.mapper;
 
-import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
+import ru.yandex.practicum.ewm.dto.ParticipationRequestDto;
 import ru.yandex.practicum.ewm.model.Request;
 
 import java.util.List;

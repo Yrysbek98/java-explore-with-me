@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.dto.EventDto;
+package ru.yandex.practicum.ewm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +12,18 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminEventSearchParams {
+public class PublicEventSearchParams {
 
-    private List<Long> users;
-    private List<String> states;
+    private String text;
     private List<Long> categories;
+    private Boolean paid;
     private LocalDateTime rangeStart;
     private LocalDateTime rangeEnd;
+
+    @Builder.Default
+    private Boolean onlyAvailable = false;
+
+    private String sort;
 
     @Builder.Default
     private Integer from = 0;

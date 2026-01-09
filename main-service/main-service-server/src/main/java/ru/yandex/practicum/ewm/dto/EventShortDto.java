@@ -1,12 +1,10 @@
-package ru.yandex.practicum.ewm.dto.EventDto;
+package ru.yandex.practicum.ewm.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
-import ru.yandex.practicum.ewm.dto.UserDto.UserShortDto;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.ewm.dto.CompilationDto;
+package ru.yandex.practicum.ewm.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
