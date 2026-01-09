@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.ewm.RequestStatsDto;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 import ru.yandex.practicum.ewm.connection.StatsClient;
-import ru.yandex.practicum.ewm.dto.EventFullDto;
-import ru.yandex.practicum.ewm.dto.EventShortDto;
-import ru.yandex.practicum.ewm.dto.PublicEventSearchParams;
+import ru.yandex.practicum.ewm.dto.*;
 import ru.yandex.practicum.ewm.enums.EventState;
 
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;

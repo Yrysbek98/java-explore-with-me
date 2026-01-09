@@ -1,9 +1,7 @@
 package ru.yandex.practicum.ewm.events.service;
 
 
-import ru.yandex.practicum.ewm.dto.AdminEventSearchParams;
-import ru.yandex.practicum.ewm.dto.EventFullDto;
-import ru.yandex.practicum.ewm.dto.UpdateEventAdminRequest;
+import ru.yandex.practicum.ewm.dto.*;
 
 import java.util.List;
 

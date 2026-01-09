@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
-import ru.yandex.practicum.ewm.dto.CategoryDto;
-import ru.yandex.practicum.ewm.dto.NewCategoryDto;
+import ru.yandex.practicum.ewm.dto.*;
+
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.mapper.CategoryMapper;

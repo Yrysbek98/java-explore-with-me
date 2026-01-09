@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 import ru.yandex.practicum.ewm.connection.StatsClient;
-import ru.yandex.practicum.ewm.dto.CompilationDto;
+import ru.yandex.practicum.ewm.dto.*;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.mapper.CompilationMapper;
 import ru.yandex.practicum.ewm.model.Compilation;

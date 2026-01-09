@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 import ru.yandex.practicum.ewm.connection.StatsClient;
 import ru.yandex.practicum.ewm.dto.*;
-import ru.yandex.practicum.ewm.dto.ParticipationRequestDto;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.enums.RequestStatus;
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;

@@ -1,8 +1,6 @@
 package ru.yandex.practicum.ewm.compilations.service;
 
-import ru.yandex.practicum.ewm.dto.CompilationDto;
-import ru.yandex.practicum.ewm.dto.NewCompilationDto;
-import ru.yandex.practicum.ewm.dto.UpdateCompilationRequest;
+import ru.yandex.practicum.ewm.dto.*;
 
 public interface AdminCompilationService {
 

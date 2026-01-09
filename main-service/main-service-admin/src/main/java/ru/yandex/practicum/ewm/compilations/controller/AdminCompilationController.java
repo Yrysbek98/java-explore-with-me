@@ -6,8 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.ewm.compilations.service.AdminCompilationService;
-import ru.yandex.practicum.ewm.dto.CompilationDto;
-import ru.yandex.practicum.ewm.dto.NewCompilationDto;
+import ru.yandex.practicum.ewm.dto.*;
 import ru.yandex.practicum.ewm.dto.UpdateCompilationRequest;
 
 @RestController

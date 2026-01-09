@@ -1,9 +1,7 @@
 package ru.yandex.practicum.ewm.events.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import ru.yandex.practicum.ewm.dto.EventFullDto;
-import ru.yandex.practicum.ewm.dto.EventShortDto;
-import ru.yandex.practicum.ewm.dto.PublicEventSearchParams;
+import ru.yandex.practicum.ewm.dto.*;
 
 import java.util.List;
 
