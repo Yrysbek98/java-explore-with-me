@@ -47,12 +47,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto registerUser(NewUserRequest request) {
-
         if (userRepository.existsByEmail(request.getEmail())) {
-            if (userRepository.existsByEmail(request.getEmail())) {
-                throw new ConflictException("Пользователь с таким email уже существует");
-            }
+            throw new ConflictException("Пользователь с таким email уже существует");
         }
+
 
         User user = UserMapper.toEntity(request);
         User saved = userRepository.save(user);

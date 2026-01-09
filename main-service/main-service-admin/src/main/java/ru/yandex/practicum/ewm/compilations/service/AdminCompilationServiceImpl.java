@@ -45,7 +45,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
         if (dto.getEvents() != null && !dto.getEvents().isEmpty()) {
             events = new HashSet<>(eventRepository.findAllById(dto.getEvents()));
 
-            // Проверяем что все события найдены
+
             if (events.size() != dto.getEvents().size()) {
                 throw new NotFoundException("Some events not found");
             }

@@ -10,12 +10,11 @@ import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 import ru.yandex.practicum.ewm.dto.CategoryDto.NewCategoryDto;
 
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/admin/categories")
 public class CategoryController {
-        private final CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

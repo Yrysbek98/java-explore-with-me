@@ -142,13 +142,4 @@ public class EventMapper {
         };
     }
 
-    public static EventState getNewStateFromAdminAction(String stateAction, EventState currentState) {
-        if (stateAction == null) return currentState;
-
-        return switch (stateAction.toUpperCase()) {
-            case "PUBLISH_EVENT" -> EventState.PUBLISHED;
-            case "REJECT_EVENT" -> EventState.CANCELED;
-            default -> currentState;
-        };
-    }
 }

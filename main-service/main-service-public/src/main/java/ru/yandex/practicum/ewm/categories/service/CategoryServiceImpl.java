@@ -13,7 +13,6 @@ import ru.yandex.practicum.ewm.model.Category;
 import ru.yandex.practicum.ewm.repository.CategoryRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

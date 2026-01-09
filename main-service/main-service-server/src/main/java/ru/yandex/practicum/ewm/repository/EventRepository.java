@@ -24,14 +24,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     boolean existsByIdAndInitiatorId(Long eventId, Long initiatorId); // ←
 
 
-    @Query(value = """
-                SELECT EXISTS (
-                    SELECT 1
-                    FROM events
-                    WHERE id = :eventId
-                      AND event_date >= created_on + INTERVAL '1 hour'
-                )
-            """, nativeQuery = true)
     Optional<Event> findByIdAndInitiatorId(Long eventId, Long initiatorId);
 
     @Query("SELECT e FROM Event e " +
