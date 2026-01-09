@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.ewm.ResponseStatsDto;
+import ru.yandex.practicum.ewm.connection.StatsClient;
 import ru.yandex.practicum.ewm.dto.EventDto.*;
 import ru.yandex.practicum.ewm.dto.RequestDto.ParticipationRequestDto;
 import ru.yandex.practicum.ewm.enums.EventState;
@@ -37,6 +39,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
+    private final StatsClient statsClient;
 
 
     @Override
@@ -97,7 +100,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
-        Long views = 0L; // TODO: получить из сервиса статистики
+        Long views = getViewsForSingleEvent(eventId);
 
         return EventMapper.toEventFullDto(event, confirmedRequests, views);
     }
@@ -138,7 +141,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event saved = eventRepository.save(event);
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
-        Long views = 0L; // TODO: получить из сервиса статистики
+        Long views = getViewsForSingleEvent(eventId);
 
         return EventMapper.toEventFullDto(saved, confirmedRequests, views);
     }
@@ -166,25 +169,25 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
 
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
 
         if (event.getParticipantLimit() == 0 || !event.getRequestModeration()) {
-            throw new ConflictException("Confirmation is not required for this event");
+            throw new ConflictException("Подтверждение участия в этом мероприятии не требуется.");
         }
 
 
         List<Request> requests = requestRepository.findByIdIn(request.getRequestIds());
 
         if (requests.isEmpty()) {
-            throw new NotFoundException("Requests not found");
+            throw new NotFoundException("Запрос не найден");
         }
 
         boolean allBelongToEvent = requests.stream()
                 .allMatch(r -> r.getEvent().getId().equals(eventId));
 
         if (!allBelongToEvent) {
-            throw new ConflictException("Some requests do not belong to this event");
+            throw new ConflictException("Некоторые запросы не относятся к данному мероприятию.");
         }
 
 
@@ -192,7 +195,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 .allMatch(r -> r.getStatus() == RequestStatus.PENDING);
 
         if (!allPending) {
-            throw new ConflictException("Request must have status PENDING");
+            throw new ConflictException("Запрос должен иметь статус «ОЖИДАНИЕ».");
         }
 
         Long confirmedCount = requestRepository.countConfirmedRequestsByEventId(eventId);
@@ -242,7 +245,6 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 .build();
     }
 
-
     private Map<Long, Long> getConfirmedRequestsMap(List<Long> eventIds) {
         if (eventIds.isEmpty()) {
             return Map.of();
@@ -261,11 +263,59 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             return Map.of();
         }
 
-        // TODO: Запрос к сервису статистики
+        try {
+            List<String> uris = eventIds.stream()
+                    .map(id -> "/events/" + id)
+                    .collect(Collectors.toList());
+
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10),
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return java.util.Arrays.stream(stats)
+                        .collect(Collectors.toMap(
+                                stat -> extractEventIdFromUri(stat.getUri()),
+                                ResponseStatsDto::getHits
+                        ));
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики: " + e.getMessage());
+        }
+
         return eventIds.stream()
                 .collect(Collectors.toMap(
                         eventId -> eventId,
                         eventId -> 0L
                 ));
+    }
+
+    private Long getViewsForSingleEvent(Long eventId) {
+        try {
+            List<String> uris = List.of("/events/" + eventId);
+
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10),
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return stats[0].getHits();
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики для события " + eventId + ": " + e.getMessage());
+        }
+
+        return 0L;
+    }
+
+    private Long extractEventIdFromUri(String uri) {
+        String[] parts = uri.split("/");
+        return Long.parseLong(parts[parts.length - 1]);
     }
 }

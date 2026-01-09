@@ -2,6 +2,8 @@ package ru.yandex.practicum.ewm.compilations.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.ewm.ResponseStatsDto;
+import ru.yandex.practicum.ewm.connection.StatsClient;
 import ru.yandex.practicum.ewm.dto.CompilationDto.CompilationDto;
 import ru.yandex.practicum.ewm.dto.CompilationDto.NewCompilationDto;
 import ru.yandex.practicum.ewm.dto.CompilationDto.UpdateCompilationRequest;
@@ -14,10 +16,8 @@ import ru.yandex.practicum.ewm.repository.CompilationRepository;
 import ru.yandex.practicum.ewm.repository.EventRepository;
 import ru.yandex.practicum.ewm.repository.RequestRepository;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -27,6 +27,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
+    private final StatsClient statsClient;
 
 
     @Override
@@ -121,8 +122,8 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
         List<Object[]> results = requestRepository.countConfirmedRequestsByEventIds(eventIds);
         return results.stream()
                 .collect(Collectors.toMap(
-                        row -> (Long) row[0],  // eventId
-                        row -> (Long) row[1]   // count
+                        row -> (Long) row[0],
+                        row -> (Long) row[1]
                 ));
     }
 
@@ -131,14 +132,43 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
             return Map.of();
         }
 
-        // TODO: Запрос к сервису статистики
-
-
-        return events.stream()
+        List<Long> eventIds = events.stream()
                 .map(Event::getId)
+                .collect(Collectors.toList());
+
+        try {
+            List<String> uris = eventIds.stream()
+                    .map(id -> "/events/" + id)
+                    .collect(Collectors.toList());
+
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10), // Начало времени
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return Arrays.stream(stats)
+                        .collect(Collectors.toMap(
+                                stat -> extractEventIdFromUri(stat.getUri()),
+                                ResponseStatsDto::getHits
+                        ));
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики для подборки: " + e.getMessage());
+        }
+
+        return eventIds.stream()
                 .collect(Collectors.toMap(
                         eventId -> eventId,
                         eventId -> 0L
                 ));
+    }
+
+    private Long extractEventIdFromUri(String uri) {
+        // uri формата "/events/123"
+        String[] parts = uri.split("/");
+        return Long.parseLong(parts[parts.length - 1]);
     }
 }

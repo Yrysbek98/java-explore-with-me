@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.ewm.ResponseStatsDto;
+import ru.yandex.practicum.ewm.connection.StatsClient;
 import ru.yandex.practicum.ewm.dto.EventDto.AdminEventSearchParams;
 import ru.yandex.practicum.ewm.dto.EventDto.EventFullDto;
 import ru.yandex.practicum.ewm.dto.EventDto.UpdateEventAdminRequest;
@@ -34,7 +36,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
-    // private final StatisticsClient statisticsClient; // ← Для views (пока можем использовать 0L)
+    private final StatsClient statsClient;
 
     @Override
     @Transactional(readOnly = true)
@@ -46,7 +48,6 @@ public class AdminEventServiceImpl implements AdminEventService {
             }
         }
 
-        // Парсинг states
         List<EventState> eventStates = null;
         if (filter.getStates() != null && !filter.getStates().isEmpty()) {
             eventStates = filter.getStates().stream()
@@ -136,7 +137,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         Event saved = eventRepository.save(event);
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
-        Long views = 0L; // TODO: получить из сервиса статистики
+        Long views = getViewsForSingleEvent(eventId);
 
         return EventMapper.toEventFullDto(saved, confirmedRequests, views);
     }
@@ -160,12 +161,59 @@ public class AdminEventServiceImpl implements AdminEventService {
             return Map.of();
         }
 
-        // TODO: Запрос к сервису статистики
-        // Пока возвращаем пустую мапу (все views = 0)
+        try {
+            List<String> uris = eventIds.stream()
+                    .map(id -> "/events/" + id)
+                    .collect(Collectors.toList());
+
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10), // Начало времени
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return java.util.Arrays.stream(stats)
+                        .collect(Collectors.toMap(
+                                stat -> extractEventIdFromUri(stat.getUri()),
+                                ResponseStatsDto::getHits
+                        ));
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики: " + e.getMessage());
+        }
+
         return eventIds.stream()
                 .collect(Collectors.toMap(
                         eventId -> eventId,
                         eventId -> 0L
                 ));
+    }
+
+    private Long getViewsForSingleEvent(Long eventId) {
+        try {
+            List<String> uris = List.of("/events/" + eventId);
+
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10),
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return stats[0].getHits();
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики для события " + eventId + ": " + e.getMessage());
+        }
+
+        return 0L;
+    }
+
+    private Long extractEventIdFromUri(String uri) {
+        String[] parts = uri.split("/");
+        return Long.parseLong(parts[parts.length - 1]);
     }
 }

@@ -19,32 +19,32 @@ import java.time.LocalDateTime;
 @Builder
 public class NewEventDto {
 
-    @NotBlank(message = "Annotation must not be blank")
-    @Size(min = 20, max = 2000, message = "Annotation must be between 20 and 2000 characters")
+    @NotBlank
+    @Size(min = 20, max = 2000)
     private String annotation;
 
-    @NotNull(message = "Category must not be null")
+    @NotNull
     private Long category;
 
-    @NotBlank(message = "Description must not be blank")
-    @Size(min = 20, max = 7000, message = "Description must be between 20 and 7000 characters")
+    @NotBlank
+    @Size(min = 20, max = 7000)
     private String description;
 
-    @NotNull(message = "Event date must not be null")
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    @NotNull(message = "Location must not be null")
+    @NotNull
     private LocationDto location;
 
     private Boolean paid;
 
-    @Min(value = 0, message = "Participant limit must be non-negative")
+    @Min(value = 0)
     private Integer participantLimit;
 
     private Boolean requestModeration;
 
-    @NotBlank(message = "Title must not be blank")
-    @Size(min = 3, max = 120, message = "Title must be between 3 and 120 characters")
+    @NotBlank
+    @Size(min = 3, max = 120)
     private String title;
 }

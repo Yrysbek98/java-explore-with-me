@@ -7,6 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.ewm.RequestStatsDto;
+import ru.yandex.practicum.ewm.ResponseStatsDto;
+import ru.yandex.practicum.ewm.connection.StatsClient;
 import ru.yandex.practicum.ewm.dto.EventDto.EventFullDto;
 import ru.yandex.practicum.ewm.dto.EventDto.EventShortDto;
 import ru.yandex.practicum.ewm.dto.EventDto.PublicEventSearchParams;
@@ -29,13 +32,15 @@ public class PublicEventServiceImpl implements PublicEventService {
 
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
-    // private final StatisticsClient statisticsClient; // TODO: добавить когда будет готов
+    private final StatsClient statsClient;
 
 
     @Override
     @Transactional(readOnly = true)
     public List<EventShortDto> searchEventsForPublic(PublicEventSearchParams params,
                                                      HttpServletRequest request) {
+
+        saveHit(request);
 
         LocalDateTime rangeStart = params.getRangeStart();
         LocalDateTime rangeEnd = params.getRangeEnd();
@@ -48,8 +53,7 @@ public class PublicEventServiceImpl implements PublicEventService {
         Sort sort = Sort.by("eventDate").ascending(); // по умолчанию
         if (params.getSort() != null) {
             if (params.getSort().equalsIgnoreCase("VIEWS")) {
-                sort = Sort.by("id").ascending(); // Временно по ID, т.к. views не в БД
-                // TODO: После интеграции со статистикой сортировать по views
+                sort = Sort.by("id").ascending();
             } else if (params.getSort().equalsIgnoreCase("EVENT_DATE")) {
                 sort = Sort.by("eventDate").ascending();
             }
@@ -81,20 +85,24 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         Map<Long, Long> viewsMap = getViewsMap(eventIds);
 
-        // Сохраняем статистику просмотра
-        // TODO: statisticsClient.saveHit(request.getRequestURI(), request.getRemoteAddr());
-
-        return events.getContent().stream()
+        List<EventShortDto> result = events.getContent().stream()
                 .map(event -> EventMapper.toEventShortDto(
                         event,
                         confirmedRequestsMap.getOrDefault(event.getId(), 0L),
                         viewsMap.getOrDefault(event.getId(), 0L)
                 ))
                 .collect(Collectors.toList());
+        if (params.getSort() != null && params.getSort().equalsIgnoreCase("VIEWS")) {
+            result.sort((e1, e2) -> Long.compare(e2.getViews(), e1.getViews()));
+        }
+
+        return result;
     }
 
     @Override
     public EventFullDto getPublicEventById(Long eventId, HttpServletRequest request) {
+
+        saveHit(request);
 
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
@@ -102,16 +110,27 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
-        // Получаем views из статистики и увеличиваем счетчик
-        // TODO: Long views = statisticsClient.getViewsAndIncrement("/events/" + eventId);
-        Long views = 0L; // Временно
 
-        // Сохраняем статистику просмотра
-        // TODO: statisticsClient.saveHit(request.getRequestURI(), request.getRemoteAddr());
+        Long views = getViewsForSingleEvent(eventId);
+
 
         return EventMapper.toEventFullDto(event, confirmedRequests, views);
     }
 
+    private void saveHit(HttpServletRequest request) {
+        try {
+            RequestStatsDto dto = RequestStatsDto.builder()
+                    .app("ewm-main-service")
+                    .uri(request.getRequestURI())
+                    .ip(request.getRemoteAddr())
+                    .timestamp(LocalDateTime.now())
+                    .build();
+
+            statsClient.saveHit(dto);
+        } catch (Exception e) {
+            System.err.println("Ошибка сохранения статистики: " + e.getMessage());
+        }
+    }
 
     private Map<Long, Long> getConfirmedRequestsMap(List<Long> eventIds) {
         if (eventIds.isEmpty()) {
@@ -131,14 +150,59 @@ public class PublicEventServiceImpl implements PublicEventService {
             return Map.of();
         }
 
-        // TODO: Запрос к сервису статистики
-        // Map<Long, Long> viewsMap = statisticsClient.getViewsForEvents(eventIds);
+        try {
+            List<String> uris = eventIds.stream()
+                    .map(id -> "/events/" + id)
+                    .collect(Collectors.toList());
 
-        // Временная заглушка - возвращаем 0 для всех
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10),
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return java.util.Arrays.stream(stats)
+                        .collect(Collectors.toMap(
+                                stat -> extractEventIdFromUri(stat.getUri()),
+                                ResponseStatsDto::getHits
+                        ));
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики: " + e.getMessage());
+        }
+
         return eventIds.stream()
                 .collect(Collectors.toMap(
                         eventId -> eventId,
                         eventId -> 0L
                 ));
+    }
+
+    private Long getViewsForSingleEvent(Long eventId) {
+        try {
+            List<String> uris = List.of("/events/" + eventId);
+
+            ResponseStatsDto[] stats = statsClient.getStats(
+                    LocalDateTime.now().minusYears(10),
+                    LocalDateTime.now(),
+                    uris,
+                    false
+            ).getBody();
+
+            if (stats != null && stats.length > 0) {
+                return stats[0].getHits();
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка получения статистики для события " + eventId + ": " + e.getMessage());
+        }
+
+        return 0L;
+    }
+
+    private Long extractEventIdFromUri(String uri) {
+        String[] parts = uri.split("/");
+        return Long.parseLong(parts[parts.length - 1]);
     }
 }

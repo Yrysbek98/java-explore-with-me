@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -39,7 +38,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 message,
-                "Incorrectly made request.",
+                "Запрос составлен неверно.",
                 "BAD_REQUEST",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -52,7 +51,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 ex.getMessage(),
-                "The required object was not found.",
+                "Объект не найден.",
                 "NOT_FOUND",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -65,7 +64,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 ex.getMessage(),
-                "Integrity constraint has been violated.",
+                "Нарушено ограничение целостности.",
                 "CONFLICT",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -78,7 +77,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 ex.getMessage(),
-                "For the requested operation the conditions are not met.",
+                "Для выполнения запрошенной операции условия не соблюдены.",
                 "FORBIDDEN",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -91,7 +90,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(ex.getClass().getName()),
                 ex.getMessage(),
-                "An unexpected error occurred.",
+                "Произошла непредвиденная ошибка.",
                 "INTERNAL_SERVER_ERROR",
                 LocalDateTime.now().format(FORMATTER)
         );
