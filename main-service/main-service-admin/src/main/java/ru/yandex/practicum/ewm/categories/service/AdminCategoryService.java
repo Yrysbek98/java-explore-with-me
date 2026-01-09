@@ -5,7 +5,7 @@ import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 import ru.yandex.practicum.ewm.dto.CategoryDto.NewCategoryDto;
 
 
-public interface CategoryService {
+public interface AdminCategoryService {
 
     CategoryDto addCategory(NewCategoryDto dto);
 

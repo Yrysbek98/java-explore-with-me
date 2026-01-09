@@ -5,7 +5,7 @@ import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 
 import java.util.List;
 
-public interface CategoryService {
+public interface PublicCategoryService {
 
     CategoryDto getCategoryById(Long catId);
 

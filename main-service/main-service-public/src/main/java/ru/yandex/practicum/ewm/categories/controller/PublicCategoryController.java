@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import ru.yandex.practicum.ewm.categories.service.CategoryService;
+import ru.yandex.practicum.ewm.categories.service.PublicCategoryService;
 import ru.yandex.practicum.ewm.dto.CategoryDto.CategoryDto;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/categories")
-public class CategoryController {
-    private final CategoryService categoryService;
+public class PublicCategoryController {
+    private final PublicCategoryService categoryService;
 
     @GetMapping("/{catId}")
     public CategoryDto getCategory(@PathVariable Long catId) {
