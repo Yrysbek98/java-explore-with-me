@@ -12,10 +12,10 @@
     <artifactId>main-service</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>main-service-public</module>
-        <module>main-service-admin</module>
         <module>main-service-server</module>
+        <module>main-service-admin</module>
         <module>main-service-private</module>
+        <module>main-service-public</module>
     </modules>
 
     <properties>
