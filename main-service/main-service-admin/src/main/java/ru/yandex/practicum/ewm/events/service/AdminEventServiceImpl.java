@@ -40,10 +40,9 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Transactional(readOnly = true)
     public List<EventFullDto> searchEventsForAdmin(AdminEventSearchParams filter) {
 
-        // Валидация дат
         if (filter.getRangeStart() != null && filter.getRangeEnd() != null) {
             if (filter.getRangeStart().isAfter(filter.getRangeEnd())) {
-                throw new ValidationException("rangeStart не может быть позже rangeEnd");
+                throw new ValidationException("Проблемы с датами");
             }
         }
 
@@ -93,13 +92,13 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Transactional
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequest dto) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
 
         Category category = null;
         if (dto.getCategory() != null) {
             category = categoryRepository.findById(dto.getCategory())
-                    .orElseThrow(() -> new NotFoundException("Category with id=" + dto.getCategory() + " was not found"));
+                    .orElseThrow(() -> new NotFoundException("Категорие с таким id=" + dto.getCategory() + " не найден"));
         }
 
 
@@ -118,7 +117,7 @@ public class AdminEventServiceImpl implements AdminEventService {
             if ("PUBLISH_EVENT".equals(dto.getStateAction())) {
                 if (event.getState() != EventState.PENDING) {
                     throw new ConflictException(
-                            "Cannot publish the event because it's not in the right state: " + event.getState()
+                            "Невозможно опубликовать событие, поскольку оно находится в неправильном состоянии:" + event.getState()
                     );
                 }
                 event.setState(EventState.PUBLISHED);
@@ -127,7 +126,7 @@ public class AdminEventServiceImpl implements AdminEventService {
             } else if ("REJECT_EVENT".equals(dto.getStateAction())) {
                 if (event.getState() == EventState.PUBLISHED) {
                     throw new ConflictException(
-                            "Cannot reject the event because it's already published"
+                            "Отклонить событие невозможно, так как оно уже опубликовано."
                     );
                 }
                 event.setState(EventState.CANCELED);
@@ -151,8 +150,8 @@ public class AdminEventServiceImpl implements AdminEventService {
         List<Object[]> results = requestRepository.countConfirmedRequestsByEventIds(eventIds);
         return results.stream()
                 .collect(Collectors.toMap(
-                        row -> (Long) row[0],  // eventId
-                        row -> (Long) row[1]   // count
+                        row -> (Long) row[0],
+                        row -> (Long) row[1]
                 ));
     }
 

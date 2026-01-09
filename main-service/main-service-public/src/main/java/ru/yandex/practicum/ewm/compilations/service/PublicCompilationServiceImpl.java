@@ -53,7 +53,7 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
     @Transactional(readOnly = true)
     public CompilationDto getCompilationById(Long compId) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Подборка событий с таким id=" + compId + " не найден"));
 
 
         Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsMap(compilation.getEvents());
@@ -74,8 +74,8 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
         List<Object[]> results = requestRepository.countConfirmedRequestsByEventIds(eventIds);
         return results.stream()
                 .collect(Collectors.toMap(
-                        row -> (Long) row[0],  // eventId
-                        row -> (Long) row[1]   // count
+                        row -> (Long) row[0],
+                        row -> (Long) row[1]
                 ));
     }
 

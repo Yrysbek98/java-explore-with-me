@@ -64,7 +64,6 @@ public class PublicEventController {
             @PathVariable Long id,
             HttpServletRequest request) {
 
-        // Передаем request для логирования просмотра
         return eventService.getPublicEventById(id, request);
     }
 }

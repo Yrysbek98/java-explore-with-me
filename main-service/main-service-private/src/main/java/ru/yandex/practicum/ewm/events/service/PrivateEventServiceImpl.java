@@ -44,7 +44,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     public List<EventShortDto> getUserEvents(Long userId, Integer from, Integer size) {
 
         if (!userRepository.existsById(userId)) {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException("Пользователь с таким id=" + userId + " не найден");
         }
 
         Pageable pageable = PageRequest.of(from / size, size);
@@ -79,9 +79,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
 
         if (dto.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new ConflictException(
-                    "Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: " + dto.getEventDate()
-            );
+            throw new ConflictException("Должно содержать дату, которая еще не наступила.");
         }
 
         Event event = EventMapper.toEntity(dto, user, category);
@@ -96,7 +94,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     public EventFullDto getUserEvent(Long userId, Long eventId) {
 
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
         Long views = 0L; // TODO: получить из сервиса статистики
@@ -108,27 +106,27 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     public EventFullDto updateUserEvent(Long userId, Long eventId, UpdateEventUserRequest dto) {
 
         if (!userRepository.existsById(userId)) {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException("Пользователь с id=" + userId + " не найден ");
         }
 
 
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
         if (event.getState() == EventState.PUBLISHED) {
-            throw new ConflictException("Only pending or canceled events can be changed");
+            throw new ConflictException("Нельзя изменить статус у данного событие");
         }
 
         Category category = null;
         if (dto.getCategory() != null) {
             category = categoryRepository.findById(dto.getCategory())
-                    .orElseThrow(() -> new NotFoundException("Category with id=" + dto.getCategory() + " was not found"));
+                    .orElseThrow(() -> new NotFoundException("Категория с id=" + dto.getCategory() + " не найден"));
         }
 
         EventMapper.updateEventFromUserRequest(event, dto, category);
 
         if (event.getEventDate() != null && event.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new ConflictException("Event date must be at least 2 hours from now");
+            throw new ConflictException("Дата должна быть как минимум на 2 часа позже");
         }
 
 
@@ -150,7 +148,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     public List<ParticipationRequestDto> getEventRequests(Long userId, Long eventId) {
 
         if (!eventRepository.existsByIdAndInitiatorId(eventId, userId)) {
-            throw new NotFoundException("Event with id=" + eventId + " was not found");
+            throw new NotFoundException("Событие с таким id=" + eventId + " не найден");
         }
 
 

@@ -35,7 +35,7 @@ public class RequestServiceImpl implements RequestService {
     public List<ParticipationRequestDto> getUserRequests(Long userId) {
 
         if (!userRepository.existsById(userId)) {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException("Пользователь с таким id=" + userId + "не найден");
         }
 
         List<Request> requests = requestRepository.findByRequesterId(userId);
@@ -46,29 +46,25 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto addParticipationRequest(Long userId, Long eventId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Пользователь с таким id=" + userId + " не найден"));
 
 
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
 
         if (requestRepository.existsByEventIdAndRequesterId(eventId, userId)) {
-            throw new ConflictException(
-                    "could not execute statement; SQL [n/a]; constraint [uq_request]; " +
-                            "nested exception is org.hibernate.exception.ConstraintViolationException: " +
-                            "could not execute statement"
-            );
+            throw new ConflictException("Не удалось выполнить запрос");
         }
 
 
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            throw new ConflictException("The initiator of the event cannot add a request to participate in his event");
+            throw new ConflictException("Инициатор мероприятия не может добавить заявку на участие в своем мероприятии.");
         }
 
 
         if (event.getState() != EventState.PUBLISHED) {
-            throw new ConflictException("Event is not published yet");
+            throw new ConflictException("Событие еще не опубликовано");
         }
 
 
@@ -79,7 +75,7 @@ public class RequestServiceImpl implements RequestService {
             Long confirmedCount = requestRepository.countConfirmedRequestsByEventId(eventId);
 
             if (confirmedCount >= participantLimit) {
-                throw new ConflictException("The participant limit has been reached");
+                throw new ConflictException("Достигнут лимит участников.");
             }
         }
 
@@ -105,7 +101,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
         Request request = requestRepository.findByIdAndRequesterId(requestId, userId)
-                .orElseThrow(() -> new NotFoundException("Request with id=" + requestId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Запрос с таким  id=" + requestId + " не найден"));
         request.setStatus(RequestStatus.CANCELED);
         Request updated = requestRepository.save(request);
 

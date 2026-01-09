@@ -33,11 +33,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     public CompilationDto addCompilation(NewCompilationDto dto) {
 
         if (compilationRepository.existsByTitle(dto.getTitle())) {
-            throw new ConflictException(
-                    "could not execute statement; SQL [n/a]; constraint [uq_compilation_name]; " +
-                            "nested exception is org.hibernate.exception.ConstraintViolationException: " +
-                            "could not execute statement"
-            );
+            throw new ConflictException("Не удалось найти данную подборку");
         }
 
 
@@ -47,7 +43,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
 
 
             if (events.size() != dto.getEvents().size()) {
-                throw new NotFoundException("Some events not found");
+                throw new NotFoundException("Некоторые события не найдены");
             }
         }
 
@@ -65,7 +61,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     @Override
     public void deleteCompilation(Long compId) {
         if (!compilationRepository.existsById(compId)) {
-            throw new NotFoundException("Compilation with id=" + compId + " was not found");
+            throw new NotFoundException("Данная подборка =" + compId + " не найден");
         }
 
         compilationRepository.deleteById(compId);
@@ -75,14 +71,14 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     public CompilationDto updateCompilation(Long compId, UpdateCompilationRequest request) {
 
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Данная подборка " + compId + " не найдена"));
 
 
         if (request.getTitle() != null &&
                 !request.getTitle().equals(compilation.getTitle()) &&
                 compilationRepository.existsByTitleAndIdNot(request.getTitle(), compId)) {
             throw new ConflictException(
-                    "Compilation with title '" + request.getTitle() + "' already exists"
+                    "Подборка  '" + request.getTitle() + "' уже достигло лимита"
             );
         }
 
@@ -97,7 +93,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
 
 
                 if (events.size() != request.getEvents().size()) {
-                    throw new NotFoundException("Some events not found");
+                    throw new NotFoundException("Некоторые события не найдены");
                 }
             }
         }
