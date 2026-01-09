@@ -15,7 +15,7 @@ public interface StatsRepository extends JpaRepository<Stats, Long> {
 
 
     @Query("""
-            SELECT new ru.practicum.stats.dto.ResponseStatsDto(s.app, s.uri, COUNT(DISTINCT s.ip))
+            SELECT new ru.yandex.practicum.ewm.ResponseStatsDto(s.app, s.uri, COUNT(DISTINCT s.ip))
             FROM Stats s
             WHERE s.timestamp BETWEEN :start AND :end
             AND (COALESCE(:uris, NULL) IS NULL OR s.uri IN :uris)
@@ -30,7 +30,7 @@ public interface StatsRepository extends JpaRepository<Stats, Long> {
 
 
     @Query("""
-            SELECT new ru.practicum.stats.dto.ResponseStatsDto(s.app, s.uri, COUNT(s.ip))
+            SELECT new ru.yandex.practicum.ewm.ResponseStatsDto(s.app, s.uri, COUNT(s.ip))
             FROM Stats s
             WHERE s.timestamp BETWEEN :start AND :end
             AND (COALESCE(:uris, NULL) IS NULL OR s.uri IN :uris)
