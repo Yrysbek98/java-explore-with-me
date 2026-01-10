@@ -1,5 +1,6 @@
 package ru.yandex.practicum.ewm.service;
 
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.RequestStatsDto;
@@ -31,13 +32,23 @@ public class StatsServiceImpl implements StatsService {
             Boolean unique
     ) {
         if (start.isAfter(end)) {
-            throw new IllegalArgumentException("Start date must be before end date");
+            throw new ValidationException("Неправильно указаны даты");
         }
 
+        boolean urisEmpty = uris == null || uris.isEmpty();
+
         if (Boolean.TRUE.equals(unique)) {
-            return statsRepository.findUniqueStats(start, end, uris);
+            if (urisEmpty) {
+                return statsRepository.findAllUniqueStats(start, end);
+            } else {
+                return statsRepository.findUniqueStatsByUris(start, end, uris);
+            }
         } else {
-            return statsRepository.findAllStats(start, end, uris);
+            if (urisEmpty) {
+                return statsRepository.findAllStats(start, end);
+            } else {
+                return statsRepository.findStatsByUris(start, end, uris);
+            }
         }
     }
 }
