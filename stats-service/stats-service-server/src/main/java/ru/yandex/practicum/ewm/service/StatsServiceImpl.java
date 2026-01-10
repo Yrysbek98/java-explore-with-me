@@ -1,7 +1,6 @@
 package ru.yandex.practicum.ewm.service;
 
 
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.RequestStatsDto;
@@ -33,7 +32,7 @@ public class StatsServiceImpl implements StatsService {
             Boolean unique
     ) {
         if (start.isAfter(end)) {
-            throw new ValidationException("Неправильная дата");
+            throw new IllegalArgumentException("Неправильная дата");
         }
 
         if (Boolean.TRUE.equals(unique)) {
