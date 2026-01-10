@@ -47,7 +47,8 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto addParticipationRequest(Long userId, Long eventId) {
 
         if (eventId == null) {
-            throw new ValidationException("eventId обязателен");}
+            throw new ValidationException("eventId обязателен");
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id=" + userId + " не найден"));
