@@ -168,7 +168,7 @@ public class AdminEventServiceImpl implements AdminEventService {
                     LocalDateTime.now().minusYears(10), // Начало времени
                     LocalDateTime.now(),
                     uris,
-                    false
+                    true
             ).getBody();
 
             if (stats != null && stats.length > 0) {
@@ -197,7 +197,7 @@ public class AdminEventServiceImpl implements AdminEventService {
                     LocalDateTime.now().minusYears(10),
                     LocalDateTime.now().plusSeconds(1),
                     uris,
-                    false
+                    true
             ).getBody();
 
             if (stats != null && stats.length > 0) {

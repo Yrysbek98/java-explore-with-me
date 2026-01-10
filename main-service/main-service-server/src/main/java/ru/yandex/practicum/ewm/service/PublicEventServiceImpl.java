@@ -21,6 +21,7 @@ import ru.yandex.practicum.ewm.repository.EventRepository;
 import ru.yandex.practicum.ewm.repository.RequestRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -110,16 +111,10 @@ public class PublicEventServiceImpl implements PublicEventService {
         saveHit(request);
 
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
 
 
         Long views = getViewsForSingleEvent(eventId);
@@ -170,7 +165,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                     LocalDateTime.now().minusYears(10),
                     LocalDateTime.now(),
                     uris,
-                    false
+                    true
             ).getBody();
 
             if (stats != null && stats.length > 0) {
@@ -199,7 +194,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                     LocalDateTime.now().minusYears(10),
                     LocalDateTime.now().plusSeconds(1),
                     uris,
-                    false
+                    true
             ).getBody();
 
             if (stats != null && stats.length > 0) {
