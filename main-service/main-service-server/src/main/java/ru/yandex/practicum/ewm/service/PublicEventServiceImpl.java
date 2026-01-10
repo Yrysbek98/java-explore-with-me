@@ -107,6 +107,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto getPublicEventById(Long eventId, HttpServletRequest request) {
 
         saveHit(request);
@@ -114,34 +115,27 @@ public class PublicEventServiceImpl implements PublicEventService {
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
-
         String ipAddress = request.getRemoteAddr();
 
         Set<String> ipSet = eventIpCache.computeIfAbsent(eventId, k -> ConcurrentHashMap.newKeySet());
 
-        boolean isNewView = false;
-
+        boolean shouldIncrement = false;
 
         synchronized (ipSet) {
             if (!ipSet.contains(ipAddress)) {
-
                 ipSet.add(ipAddress);
-                isNewView = true;
+                shouldIncrement = true;
             }
+        }
+
+        if (shouldIncrement) {
+            event.setViews(event.getViews() + 1);
+            eventRepository.save(event);
         }
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
-
-        Long statsViews = getViewsForSingleEvent(eventId);
-
-
-        Long finalViews = statsViews;
-        if (isNewView) {
-            finalViews = (statsViews != null ? statsViews : 0L) + 1L;
-        }
-
-        return EventMapper.toEventFullDto(event, confirmedRequests, finalViews);
+        return EventMapper.toEventFullDto(event, confirmedRequests, event.getViews());
     }
 
     private void saveHit(HttpServletRequest request) {
