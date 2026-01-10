@@ -21,7 +21,6 @@ import ru.yandex.practicum.ewm.repository.EventRepository;
 import ru.yandex.practicum.ewm.repository.RequestRepository;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
