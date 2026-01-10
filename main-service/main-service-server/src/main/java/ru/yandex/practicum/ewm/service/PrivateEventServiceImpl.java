@@ -301,7 +301,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                     LocalDateTime.now().minusYears(10),
                     LocalDateTime.now().plusSeconds(1),
                     uris,
-                    false
+                    true
             ).getBody();
 
             if (stats != null && stats.length > 0) {
