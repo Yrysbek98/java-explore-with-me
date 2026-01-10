@@ -76,4 +76,4 @@ CREATE INDEX IF NOT EXISTS idx_compilations_pinned ON compilations(pinned);
 CREATE INDEX IF NOT EXISTS idx_compilation_events_compilation ON compilation_events(compilation_id);
 CREATE INDEX IF NOT EXISTS idx_compilation_events_event ON compilation_events(event_id);
 
-ALTER TABLE events ADD COLUMN views BIGINT DEFAULT 0;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS views BIGINT DEFAULT 0;
