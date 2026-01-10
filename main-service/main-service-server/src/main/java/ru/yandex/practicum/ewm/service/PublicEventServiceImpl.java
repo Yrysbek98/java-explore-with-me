@@ -191,7 +191,7 @@ public class PublicEventServiceImpl implements PublicEventService {
 
             ResponseStatsDto[] stats = statsClient.getStats(
                     LocalDateTime.now().minusYears(10),
-                    LocalDateTime.now(),
+                    LocalDateTime.now().plusSeconds(1),
                     uris,
                     false
             ).getBody();
