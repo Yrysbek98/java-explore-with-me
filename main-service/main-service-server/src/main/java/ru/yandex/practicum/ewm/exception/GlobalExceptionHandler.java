@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 message,
-                "Запрос составлен неверно.",
+                "Incorrectly made request.",
                 "BAD_REQUEST",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 ex.getMessage(),
-                "Объект не найден.",
+                "The required object was not found.",
                 "NOT_FOUND",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 ex.getMessage(),
-                "Нарушено ограничение целостности.",
+                "Integrity constraint has been violated.",
                 "CONFLICT",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(),
                 ex.getMessage(),
-                "Для выполнения запрошенной операции условия не соблюдены.",
+                "For the requested operation the conditions are not met.",
                 "FORBIDDEN",
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(
                 List.of(ex.getClass().getName()),
                 ex.getMessage(),
-                "Произошла непредвиденная ошибка.",
+                "An unexpected error occurred.",
                 "INTERNAL_SERVER_ERROR",
                 LocalDateTime.now().format(FORMATTER)
         );
