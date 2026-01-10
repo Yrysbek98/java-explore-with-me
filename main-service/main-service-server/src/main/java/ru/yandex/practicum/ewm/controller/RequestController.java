@@ -30,7 +30,7 @@ public class RequestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addParticipationRequest(
             @PathVariable Long userId,
-            @RequestParam @Positive Long eventId) {
+            @RequestParam(required = false) Long eventId) {
         return requestService.addParticipationRequest(userId, eventId);
     }
 

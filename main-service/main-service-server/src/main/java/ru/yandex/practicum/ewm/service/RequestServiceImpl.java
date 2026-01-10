@@ -8,6 +8,7 @@ import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.enums.RequestStatus;
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
+import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
 import ru.yandex.practicum.ewm.mapper.RequestMapper;
 import ru.yandex.practicum.ewm.model.Event;
 import ru.yandex.practicum.ewm.model.Request;
@@ -44,6 +45,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public ParticipationRequestDto addParticipationRequest(Long userId, Long eventId) {
+
+        if (eventId == null) {
+            throw new ValidationException("eventId обязателен");}
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id=" + userId + " не найден"));
