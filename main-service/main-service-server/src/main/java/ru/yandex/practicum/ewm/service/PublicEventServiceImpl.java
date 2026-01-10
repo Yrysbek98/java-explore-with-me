@@ -14,6 +14,7 @@ import ru.yandex.practicum.ewm.dto.*;
 import ru.yandex.practicum.ewm.enums.EventState;
 
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
+import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
 import ru.yandex.practicum.ewm.mapper.EventMapper;
 import ru.yandex.practicum.ewm.model.Event;
 import ru.yandex.practicum.ewm.repository.EventRepository;
@@ -42,6 +43,12 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         LocalDateTime rangeStart = params.getRangeStart();
         LocalDateTime rangeEnd = params.getRangeEnd();
+
+        if (rangeStart != null && rangeEnd != null) {
+            if (rangeStart.isAfter(rangeEnd)) {
+                throw new ValidationException("Проблемы с датами");
+            }
+        }
 
         if (rangeStart == null && rangeEnd == null) {
             rangeStart = LocalDateTime.now();

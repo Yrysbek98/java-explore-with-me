@@ -13,6 +13,7 @@ import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.enums.RequestStatus;
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
+import ru.yandex.practicum.ewm.exception.exceptionType.ValidationException;
 import ru.yandex.practicum.ewm.mapper.EventMapper;
 import ru.yandex.practicum.ewm.mapper.RequestMapper;
 import ru.yandex.practicum.ewm.model.Category;
@@ -81,7 +82,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
 
         if (dto.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new ConflictException("Должно содержать дату, которая еще не наступила.");
+            throw new ValidationException("Должно содержать дату, которая еще не наступила.");
         }
 
         Event event = EventMapper.toEntity(dto, user, category);
@@ -128,7 +129,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         EventMapper.updateEventFromUserRequest(event, dto, category);
 
         if (event.getEventDate() != null && event.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new ConflictException("Дата должна быть как минимум на 2 часа позже");
+            throw new ValidationException("Дата должна быть как минимум на 2 часа позже");
         }
 
 

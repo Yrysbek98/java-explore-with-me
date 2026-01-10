@@ -106,7 +106,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (event.getEventDate() != null) {
             LocalDateTime oneHourFromNow = LocalDateTime.now().plusHours(1);
             if (event.getEventDate().isBefore(oneHourFromNow)) {
-                throw new ConflictException(
+                throw new ValidationException(
                         "Дата начала события должна быть не ранее чем за час от текущего момента"
                 );
             }
