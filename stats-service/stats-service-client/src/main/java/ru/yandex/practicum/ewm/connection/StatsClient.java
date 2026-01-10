@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StatsClient {
-    private final RestTemplate restTemplate;
+    private  final  RestTemplate restTemplate;
 
     @Value("${stats-service.url}")
     private String serverUrl;
