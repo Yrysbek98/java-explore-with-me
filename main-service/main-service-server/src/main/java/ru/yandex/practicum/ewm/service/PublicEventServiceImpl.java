@@ -23,8 +23,6 @@ import ru.yandex.practicum.ewm.repository.RequestRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +32,6 @@ public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
     private final StatsClient statsClient;
-    private final Map<Long, Set<String>> eventIpCache = new ConcurrentHashMap<>();
 
     @Override
     @Transactional(readOnly = true)
@@ -109,29 +106,13 @@ public class PublicEventServiceImpl implements PublicEventService {
     @Override
     @Transactional
     public EventFullDto getPublicEventById(Long eventId, HttpServletRequest request) {
-
         saveHit(request);
 
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
-                .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
+                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
-        String ipAddress = request.getRemoteAddr();
-
-        Set<String> ipSet = eventIpCache.computeIfAbsent(eventId, k -> ConcurrentHashMap.newKeySet());
-
-        boolean shouldIncrement = false;
-
-        synchronized (ipSet) {
-            if (!ipSet.contains(ipAddress)) {
-                ipSet.add(ipAddress);
-                shouldIncrement = true;
-            }
-        }
-
-        if (shouldIncrement) {
-            event.setViews(event.getViews() + 1);
-            eventRepository.save(event);
-        }
+        event.setViews(event.getViews() + 1);
+        eventRepository.save(event);
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
