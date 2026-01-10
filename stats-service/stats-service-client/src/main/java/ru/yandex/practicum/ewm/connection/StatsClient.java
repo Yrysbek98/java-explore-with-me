@@ -14,11 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class StatsClient {
-    private  final  RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Value("${stats-service.url}")
     private String serverUrl;
@@ -50,9 +49,9 @@ public class StatsClient {
         if (unique != null) {
             builder.queryParam("unique", unique);
         }
-
+        String url = builder.build(false).toUriString();
         return restTemplate.getForEntity(
-                builder.toUriString(),
+                url,
                 ResponseStatsDto[].class
         );
     }

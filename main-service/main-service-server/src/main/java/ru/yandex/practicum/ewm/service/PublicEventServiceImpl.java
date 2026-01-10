@@ -23,7 +23,6 @@ import ru.yandex.practicum.ewm.repository.RequestRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +32,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
     private final StatsClient statsClient;
-    private final Map<Long, Long> viewsCache = new ConcurrentHashMap<>();
+
 
     @Override
     @Transactional(readOnly = true)
@@ -113,18 +112,11 @@ public class PublicEventServiceImpl implements PublicEventService {
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
-        Long cachedViews = viewsCache.compute(eventId, (k, v) -> {
-            if (v == null) {
-                event.setViews(event.getViews() + 1);
-                eventRepository.save(event);
-                return event.getViews(); //
-            }
-            return v;
-        });
-
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
-        return EventMapper.toEventFullDto(event, confirmedRequests, cachedViews);
+        Long views = getViewsForSingleEvent(eventId);
+
+        return EventMapper.toEventFullDto(event, confirmedRequests, views);
     }
 
     private void saveHit(HttpServletRequest request) {
