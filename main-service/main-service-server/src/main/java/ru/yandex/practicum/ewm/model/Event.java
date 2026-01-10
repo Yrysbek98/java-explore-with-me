@@ -65,6 +65,10 @@ public class Event {
     @Builder.Default
     private EventState state = EventState.PENDING;
 
+    @Column(name = "views")
+    @Builder.Default
+    private Long views = 0L;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

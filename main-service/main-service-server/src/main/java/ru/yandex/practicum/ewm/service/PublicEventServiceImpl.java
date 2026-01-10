@@ -23,6 +23,8 @@ import ru.yandex.practicum.ewm.repository.RequestRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +34,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
     private final StatsClient statsClient;
-
+    private final Map<Long, Set<String>> eventIpCache = new ConcurrentHashMap<>();
 
     @Override
     @Transactional(readOnly = true)
@@ -113,13 +115,33 @@ public class PublicEventServiceImpl implements PublicEventService {
                 .orElseThrow(() -> new NotFoundException("Событие с таким id=" + eventId + " не найден"));
 
 
+        String ipAddress = request.getRemoteAddr();
+
+        Set<String> ipSet = eventIpCache.computeIfAbsent(eventId, k -> ConcurrentHashMap.newKeySet());
+
+        boolean isNewView = false;
+
+
+        synchronized (ipSet) {
+            if (!ipSet.contains(ipAddress)) {
+
+                ipSet.add(ipAddress);
+                isNewView = true;
+            }
+        }
+
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
 
-        Long views = getViewsForSingleEvent(eventId);
+        Long statsViews = getViewsForSingleEvent(eventId);
 
 
-        return EventMapper.toEventFullDto(event, confirmedRequests, views);
+        Long finalViews = statsViews;
+        if (isNewView) {
+            finalViews = (statsViews != null ? statsViews : 0L) + 1L;
+        }
+
+        return EventMapper.toEventFullDto(event, confirmedRequests, finalViews);
     }
 
     private void saveHit(HttpServletRequest request) {
