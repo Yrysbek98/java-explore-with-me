@@ -197,7 +197,7 @@ public class AdminEventServiceImpl implements AdminEventService {
                     LocalDateTime.now().minusYears(10),
                     LocalDateTime.now().plusSeconds(1),
                     uris,
-                    true
+                    false
             ).getBody();
 
             if (stats != null && stats.length > 0) {

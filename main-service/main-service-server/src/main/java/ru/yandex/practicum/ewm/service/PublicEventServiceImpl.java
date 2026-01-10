@@ -115,6 +115,12 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         Long confirmedRequests = requestRepository.countConfirmedRequestsByEventId(eventId);
 
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
 
         Long views = getViewsForSingleEvent(eventId);
 
@@ -193,7 +199,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                     LocalDateTime.now().minusYears(10),
                     LocalDateTime.now().plusSeconds(1),
                     uris,
-                    true
+                    false
             ).getBody();
 
             if (stats != null && stats.length > 0) {
