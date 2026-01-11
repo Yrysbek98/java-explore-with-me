@@ -78,11 +78,11 @@ public class GlobalExceptionHandler {
                 List.of(),
                 ex.getMessage(),
                 "For the requested operation the conditions are not met.",
-                "FORBIDDEN",
+                "BAD_REQUEST",
                 LocalDateTime.now().format(FORMATTER)
         );
 
-        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
