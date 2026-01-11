@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now().format(FORMATTER)
         );
 
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Exception.class)
