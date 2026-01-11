@@ -120,7 +120,6 @@ public class EventMapper {
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
                 .initiator(UserMapper.toShortDto(event.getInitiator()))
-                .views(event.getViews())
                 .location(LocationMapper.toDto(event.getLocation()))
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
