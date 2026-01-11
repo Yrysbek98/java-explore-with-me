@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PublicCompilationServiceImpl implements PublicCompilationService {
 
     private final CompilationRepository compilationRepository;
@@ -112,7 +114,7 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
                         ));
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики для подборки: " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return eventIds.stream()

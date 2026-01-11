@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PrivateEventServiceImpl implements PrivateEventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
@@ -283,7 +285,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                         ));
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики: " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return eventIds.stream()
@@ -308,7 +310,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 return stats[0].getHits();
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики для события " + eventId + ": " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return 0L;

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 import ru.yandex.practicum.ewm.connection.StatsClient;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AdminCompilationServiceImpl implements AdminCompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
@@ -154,7 +156,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
                         ));
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики для подборки: " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return eventIds.stream()
@@ -165,7 +167,6 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     }
 
     private Long extractEventIdFromUri(String uri) {
-        // uri формата "/events/123"
         String[] parts = uri.split("/");
         return Long.parseLong(parts[parts.length - 1]);
     }

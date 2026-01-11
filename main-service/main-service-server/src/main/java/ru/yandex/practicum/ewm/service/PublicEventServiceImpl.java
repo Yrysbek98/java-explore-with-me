@@ -2,6 +2,7 @@ package ru.yandex.practicum.ewm.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PublicEventServiceImpl implements PublicEventService {
 
     private final EventRepository eventRepository;
@@ -172,7 +174,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                         ));
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики: " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return eventIds.stream()
@@ -197,7 +199,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                 return stats[0].getHits();
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики для события " + eventId + ": " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return 0L;

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.ewm.ResponseStatsDto;
 import ru.yandex.practicum.ewm.connection.StatsClient;
-import ru.yandex.practicum.ewm.dto.*;
+import ru.yandex.practicum.ewm.dto.AdminEventSearchParams;
+import ru.yandex.practicum.ewm.dto.EventFullDto;
+import ru.yandex.practicum.ewm.dto.UpdateEventAdminRequest;
 import ru.yandex.practicum.ewm.enums.EventState;
 import ru.yandex.practicum.ewm.exception.exceptionType.ConflictException;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class AdminEventServiceImpl implements AdminEventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
@@ -179,7 +183,7 @@ public class AdminEventServiceImpl implements AdminEventService {
                         ));
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики: " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return eventIds.stream()
@@ -204,7 +208,7 @@ public class AdminEventServiceImpl implements AdminEventService {
                 return stats[0].getHits();
             }
         } catch (Exception e) {
-            System.err.println("Ошибка получения статистики для события " + eventId + ": " + e.getMessage());
+            log.error("Ошибка получения статистики для подборки", e);
         }
 
         return 0L;
