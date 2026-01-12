@@ -52,6 +52,9 @@ public class Comment {
     @Builder.Default
     private Integer notHelpfulCount = 0;
 
+    @Column(name = "moderation_reason", length = 500)
+    private String moderationReason;
+
     public boolean canBeEdited() {
         return updatedOn == null &&
                 createdOn.plusHours(1).isAfter(LocalDateTime.now());
