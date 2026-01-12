@@ -63,4 +63,22 @@ public class Comment {
     public boolean shouldBeAutoDeleted(int threshold) {
         return notHelpfulCount >= threshold;
     }
+
+
+    public int getRatingScore() {
+        return helpfulCount - notHelpfulCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return id != null && id.equals(comment.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
