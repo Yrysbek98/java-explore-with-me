@@ -100,13 +100,13 @@ CREATE INDEX IF NOT EXISTS idx_compilations_pinned ON compilations(pinned);
 CREATE INDEX IF NOT EXISTS idx_compilation_events_compilation ON compilation_events(compilation_id);
 CREATE INDEX IF NOT EXISTS idx_compilation_events_event ON compilation_events(event_id);
 
-CREATE INDEX idx_comments_event_id ON comments(event_id);
-CREATE INDEX idx_comments_author_id ON comments(author_id);
-CREATE INDEX idx_comments_status ON comments(status);
-CREATE INDEX idx_comments_created_on ON comments(created_on DESC);
-CREATE INDEX idx_comments_rating ON comments(helpful_count DESC);
+CREATE INDEX IF NOT EXISTS idx_comments_event_id ON comments(event_id);
+CREATE INDEX IF NOT EXISTS idx_comments_author_id ON comments(author_id);
+CREATE INDEX IF NOT EXISTS idx_comments_status ON comments(status);
+CREATE INDEX IF NOT EXISTS idx_comments_created_on ON comments(created_on DESC);
+CREATE INDEX IF NOT EXISTS idx_comments_rating ON comments(helpful_count DESC);
 
-CREATE INDEX idx_comment_ratings_comment_id ON comment_ratings(comment_id);
-CREATE INDEX idx_comment_ratings_user_id ON comment_ratings(user_id);
+CREATE INDEX IF NOT EXISTS idx_comment_ratings_comment_id ON comment_ratings(comment_id);
+CREATE INDEX IF NOT EXISTS idx_comment_ratings_user_id ON comment_ratings(user_id);
 
 ALTER TABLE events ADD COLUMN IF NOT EXISTS views BIGINT DEFAULT 0;
