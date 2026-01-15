@@ -110,3 +110,21 @@ CREATE INDEX IF NOT EXISTS idx_comment_ratings_comment_id ON comment_ratings(com
 CREATE INDEX IF NOT EXISTS idx_comment_ratings_user_id ON comment_ratings(user_id);
 
 ALTER TABLE events ADD COLUMN IF NOT EXISTS views BIGINT DEFAULT 0;
+
+DELETE FROM comment_ratings;
+DELETE FROM comments;
+DELETE FROM compilation_events;
+DELETE FROM compilations;
+DELETE FROM requests;
+DELETE FROM events;
+DELETE FROM categories;
+DELETE FROM users;
+
+
+ALTER SEQUENCE categories_id_seq RESTART WITH 1;
+ALTER SEQUENCE users_id_seq RESTART WITH 1;
+ALTER SEQUENCE events_id_seq RESTART WITH 1;
+ALTER SEQUENCE requests_id_seq RESTART WITH 1;
+ALTER SEQUENCE compilations_id_seq RESTART WITH 1;
+ALTER SEQUENCE comments_id_seq RESTART WITH 1;
+ALTER SEQUENCE comment_ratings_id_seq RESTART WITH 1;
