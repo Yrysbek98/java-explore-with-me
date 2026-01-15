@@ -34,7 +34,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
     private final CommentRepository commentRepository;
     private final CommentRatingRepository ratingRepository;
 
-    private static final int AUTO_DELETE_THRESHOLD = 10;
+    private static final int AUTO_DELETE_THRESHOLD = 3;
 
     @Override
     public CommentDto createComment(Long eventId, Long userId, NewCommentDto dto) {

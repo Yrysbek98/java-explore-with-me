@@ -49,7 +49,7 @@ public class PrivateCommentController {
             @PathVariable @Positive Long userId,
             @PathVariable @Positive Long commentId,
             @RequestParam boolean helpful) {
-        return commentService.rateComment(commentId, userId, helpful);
+        return commentService.rateComment(userId, commentId, helpful);
     }
 
     @DeleteMapping("/users/{userId}/comments/{commentId}/rate")
@@ -58,7 +58,7 @@ public class PrivateCommentController {
             @PathVariable @Positive Long userId,
             @PathVariable @Positive Long commentId) {
 
-        commentService.removeRating(commentId, userId);
+        commentService.removeRating(userId, commentId);
     }
 
     @GetMapping("/users/{userId}/comments")
