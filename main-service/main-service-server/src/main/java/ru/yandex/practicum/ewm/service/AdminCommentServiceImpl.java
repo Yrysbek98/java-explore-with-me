@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminCommentServiceImpl implements AdminCommentService {
 
-    private CommentRepository commentRepository;
+    private final  CommentRepository commentRepository;
 
     @Override
     public List<CommentDto> getAllComments(CommentStatus status) {
