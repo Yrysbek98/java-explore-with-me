@@ -31,5 +31,6 @@ public class CommentDto {
     private Integer ratingScore;
     private Boolean isEdited;
     private Boolean canEdit;
-    private Boolean userRating; // null если не голосовал, true/false если голосовал
+    private Boolean userRating;
+    private String moderationReason;
 }

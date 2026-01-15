@@ -35,6 +35,7 @@ public class CommentMapper {
                 .isEdited(comment.getUpdatedOn() != null)
                 .canEdit(comment.canBeEdited())
                 .userRating(userRating)
+                .moderationReason(comment.getModerationReason())
                 .build();
     }
 
