@@ -82,7 +82,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
                 .orElseThrow(() -> new NotFoundException("Комментарий не найден с таким id: " + commentId));
 
         if (!comment.getAuthor().getId().equals(userId)) {
-            throw new ConflictException("Можно редактировать только свой комментарий");
+            throw new ConflictException("Можно удалять  только свой комментарий");
         }
 
         comment.setStatus(CommentStatus.DELETED);
