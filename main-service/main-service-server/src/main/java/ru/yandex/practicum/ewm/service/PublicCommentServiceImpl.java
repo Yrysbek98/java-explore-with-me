@@ -1,6 +1,9 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.dto.CommentDto;
 import ru.yandex.practicum.ewm.enums.CommentStatus;
@@ -26,14 +29,17 @@ public class PublicCommentServiceImpl implements PublicCommentService {
     private final CommentRatingRepository ratingRepository;
 
     @Override
-    public List<CommentDto> getEventComments(Long eventId, Long requesterId) {
+    public List<CommentDto> getEventComments(Long eventId, Long requesterId, Integer from, Integer size) {
         if (!eventRepository.existsById(eventId)) {
             throw new NotFoundException("Событие с таким id=" + eventId + " не найден");
         }
-        List<Comment> comments = commentRepository.findByEventIdAndStatusOrderByRating(
-                eventId, CommentStatus.PUBLISHED);
 
-        return comments.stream()
+        Pageable pageable = PageRequest.of(from / size, size);
+
+        Page<Comment> commentsPage = commentRepository.findByEventIdAndStatusOrderByRating(
+                eventId, CommentStatus.PUBLISHED, pageable);
+
+        return commentsPage.stream()
                 .map(comment -> {
                     Boolean userRating = null;
                     if (requesterId != null) {

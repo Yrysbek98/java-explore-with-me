@@ -1,6 +1,9 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.dto.CommentDto;
@@ -22,19 +25,18 @@ public class AdminCommentServiceImpl implements AdminCommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public List<CommentDto> getAllComments(CommentStatus status) {
+    public List<CommentDto> getAllComments(CommentStatus status, Integer from, Integer size) {
 
+        Pageable pageable = PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "createdOn"));
 
-        List<Comment> comments;
+        Page<Comment> commentsPage;
         if (status != null) {
-            comments = commentRepository.findByStatus(
-                    status, Sort.by(Sort.Direction.DESC, "createdOn"));
+            commentsPage = commentRepository.findByStatus(status, pageable);
         } else {
-            comments = commentRepository.findAll(
-                    Sort.by(Sort.Direction.DESC, "createdOn"));
+            commentsPage = commentRepository.findAll(pageable);
         }
 
-        return comments.stream()
+        return commentsPage.stream()
                 .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());
     }

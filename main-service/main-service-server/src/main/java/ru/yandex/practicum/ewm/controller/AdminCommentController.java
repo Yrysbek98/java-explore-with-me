@@ -1,5 +1,6 @@
 package ru.yandex.practicum.ewm.controller;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,10 @@ public class AdminCommentController {
 
     @GetMapping
     public List<CommentDto> getAllComments(
-            @RequestParam(required = false) CommentStatus status) {
-        return adminCommentService.getAllComments(status);
+            @RequestParam(required = false) CommentStatus status,
+            @RequestParam(defaultValue = "0") @Min(0) Integer from,
+            @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return adminCommentService.getAllComments(status, from, size);
     }
 
     @PatchMapping("/{commentId}")

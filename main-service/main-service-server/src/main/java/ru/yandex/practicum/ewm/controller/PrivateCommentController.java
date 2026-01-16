@@ -1,6 +1,7 @@
 package ru.yandex.practicum.ewm.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -62,8 +63,11 @@ public class PrivateCommentController {
     }
 
     @GetMapping("/users/{userId}/comments")
-    public List<CommentDto> getUserComments(@PathVariable @Positive Long userId) {
+    public List<CommentDto> getUserComments(
+            @PathVariable @Positive Long userId,
+            @RequestParam(defaultValue = "0") @Min(0) Integer from,
+            @RequestParam(defaultValue = "10") @Positive Integer size) {
 
-        return commentService.getUserComments(userId);
+        return commentService.getUserComments(userId, from, size);
     }
 }

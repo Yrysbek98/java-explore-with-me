@@ -1,6 +1,9 @@
 package ru.yandex.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.dto.CommentDto;
@@ -170,16 +173,17 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
     }
 
     @Override
-    public List<CommentDto> getUserComments(Long userId) {
+    public List<CommentDto> getUserComments(Long userId, Integer from, Integer size) {
 
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("Пользователь не найден с таким id: " + userId);
         }
 
-        List<Comment> comments = commentRepository.findByAuthorId(
-                userId, Sort.by(Sort.Direction.DESC, "createdOn"));
+        Pageable pageable = PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "createdOn"));
 
-        return comments.stream()
+        Page<Comment> commentsPage = commentRepository.findByAuthorId(userId, pageable);
+
+        return commentsPage.stream()
                 .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());
     }

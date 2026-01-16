@@ -1,5 +1,6 @@
 package ru.yandex.practicum.ewm.controller;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,10 @@ public class PublicCommentController {
     @GetMapping("/events/{eventId}/comments")
     public List<CommentDto> getEventComments(
             @PathVariable @Positive Long eventId,
-            @RequestParam(required = false) Long userId) {
-        return commentService.getEventComments(eventId, userId);
+            @RequestParam(required = false) Long userId,
+            @RequestParam(defaultValue = "0") @Min(0) Integer from,
+            @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return commentService.getEventComments(eventId, userId, from, size);
     }
 
     @GetMapping("/comments/{commentId}")

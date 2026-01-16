@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PublicCommentService {
 
-    List<CommentDto> getEventComments(Long eventId, Long userId);
+    List<CommentDto> getEventComments(Long eventId, Long userId, Integer from, Integer size);
 
     CommentDto getCommentById(Long commentId, Long userId);
 }

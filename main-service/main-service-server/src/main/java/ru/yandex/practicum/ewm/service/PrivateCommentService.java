@@ -17,7 +17,6 @@ public interface PrivateCommentService {
 
     void removeRating(Long userId, Long commentId);
 
-
-    List<CommentDto> getUserComments(Long userId);
+    List<CommentDto> getUserComments(Long userId, Integer from, Integer size);
 
 }
