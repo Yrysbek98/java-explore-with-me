@@ -866,7 +866,7 @@
           }],
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/admin/comments/pending"
+            "url": "{{baseUrl}}/admin/comments?status=PENDING_REVIEW"
           }
         },
         {
