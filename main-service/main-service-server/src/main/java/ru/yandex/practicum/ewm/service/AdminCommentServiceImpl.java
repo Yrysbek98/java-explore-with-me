@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminCommentServiceImpl implements AdminCommentService {
 
-    private final  CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public List<CommentDto> getAllComments(CommentStatus status) {
@@ -38,15 +38,6 @@ public class AdminCommentServiceImpl implements AdminCommentService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<CommentDto> getPendingComments() {
-        return commentRepository.findByStatus(
-                        CommentStatus.PENDING_REVIEW,
-                        Sort.by(Sort.Direction.ASC, "createdOn")
-                ).stream()
-                .map(CommentMapper::toCommentDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public CommentDto moderateComment(Long commentId, CommentStatus newStatus, String reason) {

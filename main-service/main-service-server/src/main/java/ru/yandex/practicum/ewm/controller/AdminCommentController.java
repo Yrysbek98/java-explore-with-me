@@ -25,11 +25,6 @@ public class AdminCommentController {
         return adminCommentService.getAllComments(status);
     }
 
-    @GetMapping("/pending")
-    public List<CommentDto> getPendingComments() {
-        return adminCommentService.getPendingComments();
-    }
-
     @PatchMapping("/{commentId}")
     public CommentDto moderateComment(
             @PathVariable @Positive Long commentId,

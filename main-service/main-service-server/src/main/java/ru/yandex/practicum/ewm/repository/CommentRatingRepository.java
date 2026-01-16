@@ -8,8 +8,4 @@ import java.util.Optional;
 public interface CommentRatingRepository extends JpaRepository<CommentRating, Long> {
 
     Optional<CommentRating> findByCommentIdAndUserId(Long commentId, Long userId);
-
-    boolean existsByCommentIdAndUserId(Long commentId, Long userId);
-
-    Long countByCommentIdAndIsHelpful(Long commentId, Boolean isHelpful);
 }

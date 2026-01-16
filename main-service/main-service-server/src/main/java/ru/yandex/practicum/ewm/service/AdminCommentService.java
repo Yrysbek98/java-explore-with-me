@@ -9,8 +9,6 @@ public interface AdminCommentService {
 
     List<CommentDto> getAllComments(CommentStatus status);
 
-    List<CommentDto> getPendingComments();
-
     CommentDto moderateComment(Long commentId, CommentStatus newStatus, String reason);
 
     void deleteComment(Long commentId);
