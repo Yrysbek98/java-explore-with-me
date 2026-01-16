@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.ewm.dto.CommentDto;
 import ru.yandex.practicum.ewm.enums.CommentStatus;
+import ru.yandex.practicum.ewm.enums.ModerationStatus;
 import ru.yandex.practicum.ewm.exception.exceptionType.NotFoundException;
 import ru.yandex.practicum.ewm.mapper.CommentMapper;
 import ru.yandex.practicum.ewm.model.Comment;
@@ -40,10 +41,11 @@ public class AdminCommentServiceImpl implements AdminCommentService {
 
 
     @Override
-    public CommentDto moderateComment(Long commentId, CommentStatus newStatus, String reason) {
+    public CommentDto moderateComment(Long commentId, ModerationStatus moderationStatus, String reason) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("Комментарий  не найдено с таким  id: " + commentId));
 
+        CommentStatus newStatus = CommentStatus.valueOf(moderationStatus.name());
         comment.setStatus(newStatus);
         if (reason != null && !reason.isBlank()) {
             comment.setModerationReason(reason);

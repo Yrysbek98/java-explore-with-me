@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.ewm.dto.CommentDto;
 import ru.yandex.practicum.ewm.enums.CommentStatus;
+import ru.yandex.practicum.ewm.enums.ModerationStatus;
 import ru.yandex.practicum.ewm.service.AdminCommentService;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class AdminCommentController {
     @PatchMapping("/{commentId}")
     public CommentDto moderateComment(
             @PathVariable @Positive Long commentId,
-            @RequestParam CommentStatus status,
+            @RequestParam ModerationStatus status,
             @RequestParam(required = false) String reason) {
         return adminCommentService.moderateComment(commentId, status, reason);
     }
