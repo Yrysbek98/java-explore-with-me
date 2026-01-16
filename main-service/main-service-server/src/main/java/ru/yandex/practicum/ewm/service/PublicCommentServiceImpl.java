@@ -28,7 +28,7 @@ public class PublicCommentServiceImpl implements PublicCommentService {
     @Override
     public List<CommentDto> getEventComments(Long eventId, Long requesterId) {
         if (!eventRepository.existsById(eventId)) {
-            throw new NotFoundException("Пользователь с таким id=" + eventId + " не найден");
+            throw new NotFoundException("Событие с таким id=" + eventId + " не найден");
         }
         List<Comment> comments = commentRepository.findByEventIdAndStatusOrderByRating(
                 eventId, CommentStatus.PUBLISHED);
